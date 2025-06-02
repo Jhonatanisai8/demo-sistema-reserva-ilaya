@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout-admin.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:fragment="title">Gestión de Clientes</title>
+
+    <th:block layout:fragment="styles">
+        <style>
+            /* Asegúrate de que las variables CSS del layout principal sean accesibles aquí */
+            /* Si no lo son, puedes definirlas nuevamente o asegurarte de que estén en un archivo CSS global */
+            :root {
+                --primary-color: #20c997; /* Verde/Turquesa vibrante */
+                --dark-bg: #212b36; /* Azul oscuro profundo */
+                --light-bg: #f0f2f5; /* Gris claro para el fondo del cuerpo */
+                --text-light: #e0e1e6; /* Texto claro para fondos oscuros */
+                --text-dark: #344767; /* Texto oscuro para fondos claros */
+                --accent-color: #4CAF50; /* Verde más claro para hover/activos */
+                --border-color: #dee2e6; /* Borde estándar de Bootstrap */
+                --card-bg: #ffffff; /* Fondo de tarjetas */
+            }
+
+            .card {
+                border: none; /* Elimina bordes predeterminados de Bootstrap */
+                border-radius: 0.75rem; /* Bordes más redondeados */
+                overflow: hidden; /* Asegura que el contenido respete el border-radius */
+            }
+
+            .card-header {
+                background-color: var(--primary-color) !important; /* Color primario vibrante */
+                color: var(--text-light) !important; /* Texto claro para el encabezado */
+                padding: 1rem 1.5rem; /* Más padding */
+                border-bottom: none; /* Elimina el borde inferior predeterminado */
+            }
+
+            .card-header h4 {
+                color: var(--text-light) !important; /* Asegura que el título sea claro */
+            }
+
+            .btn-light {
+                background-color: var(--light-bg);
+                color: var(--primary-color);
+                border: 1px solid var(--primary-color);
+                transition: all 0.2s ease;
+            }
+
+            .btn-light:hover {
+                background-color: var(--primary-color);
+                color: var(--text-light);
+            }
+
+            .form-control {
+                border-radius: 0.5rem; /* Bordes redondeados para inputs */
+                border-color: var(--border-color);
+            }
+
+            .btn-outline-primary {
+                border-color: var(--primary-color);
+                color: var(--primary-color);
+            }
+
+            .btn-outline-primary:hover {
+                background-color: var(--primary-color);
+                color: var(--text-light);
+            }
+
+            .btn-outline-secondary {
+                border-color: var(--text-dark); /* Color más oscuro para el botón de limpiar */
+                color: var(--text-dark);
+            }
+
+            .btn-outline-secondary:hover {
+                background-color: var(--text-dark);
+                color: var(--text-light);
+            }
+
+            .table {
+                margin-bottom: 0; /* Elimina margen inferior de la tabla */
+            }
+
+            .table thead {
+                background-color: var(--dark-bg); /* Fondo oscuro para el encabezado de la tabla */
+                color: var(--text-light); /* Texto claro */
+            }
+
+            .table th {
+                font-weight: 600; /* Texto más audaz */
+                padding: 1rem 1.5rem; /* Más padding para los encabezados */
+                border-bottom: 2px solid var(--primary-color); /* Borde inferior resaltado */
+            }
+
+            .table-striped tbody tr:nth-of-type(odd) {
+                background-color: rgba(0, 0, 0, 0.03); /* Fondo sutil para filas impares */
+            }
+
+            .table-hover tbody tr:hover {
+                background-color: rgba(0, 0, 0, 0.08); /* Fondo al pasar el ratón */
+            }
+
+            .table td {
+                vertical-align: middle;
+                padding: 0.85rem 1.5rem; /* Más padding para celdas */
+            }
+
+            /* Estilos para los botones de acción (Editar/Eliminar) */
+            .btn-info {
+                background-color: #17a2b8; /* Un azul info estándar o puedes definir una variable */
+                border-color: #17a2b8;
+                color: white;
+            }
+            .btn-info:hover {
+                background-color: #138496;
+                border-color: #117a8b;
+            }
+
+            .btn-danger {
+                background-color: #dc3545; /* Un rojo danger estándar o puedes definir una variable */
+                border-color: #dc3545;
+                color: white;
+            }
+            .btn-danger:hover {
+                background-color: #c82333;
+                border-color: #bd2130;
+            }
+
+        </style>
+    </th:block>
+</head>
+<body>
+
+<section layout:fragment="content" class="flex-grow-1">
+    <header>
+        <h1 class="h3"><i class="bi bi-person-check-fill me-2"></i>Gestión de Clientes</h1>
+    </header>
+
+    <div class="container-fluid mt-4">
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Clientes Registrados</h4>
+                <a th:href="@{/admin/apoderados/registro}" class="btn btn-light btn-sm">
+                    <i class="bi bi-plus-circle me-1"></i> Nuevo Cliente
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <form th:action="@{/admin/clientes}" method="get" class="d-flex flex-wrap align-items-center">
+                        <input type="text" name="terminoBusqueda" class="form-control me-2 flex-grow-1 mb-2 mb-md-0"
+                               placeholder="Buscar por DNI, nombres o apellidos..."
+                               th:value="${terminoBusqueda}">
+                        <button type="submit" class="btn btn-outline-primary me-2 mb-2 mb-md-0">
+                            <i class="bi bi-search"></i> Buscar
+                        </button>
+                        <a th:href="@{/admin/clientes}" class="btn btn-outline-secondary mb-2 mb-md-0">
+                            <i class="bi bi-x-circle"></i> Limpiar
+                        </a>
+                    </form>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Fecha Creación</th> <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="cliente : ${clientesBD}">
+                            <td th:text="${cliente.idCliente}">1</td>
+                            <td th:text="${cliente.nombre}">Juan</td>
+                            <td th:text="${cliente.apellido}">Perez</td>
+                            <td th:text="${cliente.email}">juan.perez@example.com</td>
+                            <td th:text="${cliente.telefono}">+51 987654321</td>
+                            <td th:text="${cliente.fechaCreacion}"></td>
+                            <a th:href="@{/admin/clientes/editar/{id}(id=${cliente.idCliente})}"
+                               class="btn btn-info btn-sm me-1" title="Editar">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a th:href="@{/admin/clientes/eliminar/{id}(id=${cliente.idCliente})}"
+                               class="btn btn-danger btn-sm" title="Eliminar"
+                               onclick="return confirm('¿Estás seguro de que quieres eliminar este cliente?');">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </td>
+                        </tr>
+                        <tr th:if="${clientesBD.isEmpty()}">
+                            <td colspan="7" class="text-center text-muted py-4">
+                                No se encontraron clientes.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<th:block layout:fragment="scripts">
+</th:block>
+</body>
+</html>
