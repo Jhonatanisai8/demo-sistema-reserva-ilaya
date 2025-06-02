@@ -75,5 +75,15 @@ public class Cliente {
         this.fechaCreacion = fechaCreacion;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
 
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }
