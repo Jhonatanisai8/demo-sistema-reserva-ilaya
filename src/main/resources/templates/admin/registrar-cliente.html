@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout-admin.html}">
+
+<head>
+    <title layout:fragment="title">Registrar Cliente</title>
+</head>
+
+<body>
+<main layout:fragment="content" class="flex-grow-1">
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Registrar Cliente</h4>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/admin/clientes/nuevo}" method="post" th:object="${cliente}">
+                    <!-- Campos de Cliente -->
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellido" class="form-label">Apellido</label>
+                        <input type="text" class="form-control" id="apellido" th:field="*{apellido}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo</label>
+                        <input type="email" class="form-control" id="email" th:field="*{email}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" id="telefono" th:field="*{telefono}" required>
+                    </div>
+
+                    <!-- Campos de Usuario -->
+                    <h5 class="mt-4">Datos de Usuario</h5>
+                    <div class="mb-3">
+                        <label for="nombreUsuario" class="form-label">Nombre de Usuario</label>
+                        <input type="text" class="form-control" id="nombreUsuario" th:field="*{usuario.nombreUsuario}"
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="contrasena" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="contrasena" th:field="*{usuario.contrasena}"
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rol" class="form-label">Rol</label>
+                        <select class="form-select" id="rol" th:field="*{usuario.rol}" required>
+                            <option value="">Seleccione un rol</option>
+                            <option value="USER">USER</option>
+                            <option value="ADMIN">ADMIN</option>
+                        </select>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a th:href="@{/admin/clientes}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

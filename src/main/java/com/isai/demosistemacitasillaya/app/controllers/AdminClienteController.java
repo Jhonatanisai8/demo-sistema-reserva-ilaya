@@ -29,5 +29,11 @@ public class AdminClienteController {
         return "admin/lista-clientes";
     }
 
+    @GetMapping(path = "/nuevo")
+    public String guardarCliente(Model model) {
+        model.addAttribute("cliente", new Cliente());
+        return "admin/registrar-cliente";
+    }
+
 
 }
