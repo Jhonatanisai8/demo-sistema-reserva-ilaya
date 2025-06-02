@@ -8,112 +8,186 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title layout:fragment="title">Panel de Administrador de Citas</title>
 
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style th:inline="css">
-        /* Variables CSS para colores modernos y atractivos */
+        /* Variables CSS para una paleta de colores moderna y atractiva */
         :root {
-            --primary-color: #20c997; /* Verde/Turquesa vibrante para acentos */
-            --dark-bg: #212b36; /* Azul oscuro profundo para la barra lateral */
-            --light-bg: #f0f2f5; /* Gris claro para el fondo del cuerpo */
+            --primary-color: #007bff; /* Azul profesional y consistente con Bootstrap */
+            --dark-bg: #212b36; /* Azul oscuro profundo para la barra lateral (similar a Notion/Slack) */
+            --light-bg: #f5f7fa; /* Gris muy claro, casi blanco, para el fondo del cuerpo */
             --text-light: #e0e1e6; /* Texto claro para fondos oscuros */
-            --text-dark: #344767; /* Texto oscuro para fondos claros */
-            --accent-color: #4CAF50; /* Verde más claro para hover/activos */
-            --border-color: #dee2e6; /* Borde estándar de Bootstrap */
+            --text-dark: #344767; /* Texto oscuro principal para fondos claros */
+            --accent-color: #0d6efd; /* Un azul ligeramente más vibrante para hover/activos */
+            --border-color: #e9ecef; /* Borde estándar de Bootstrap más sutil */
             --card-bg: #ffffff; /* Fondo de tarjetas */
+            --shadow-light: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.08); /* Sombra ligera y suave */
+            --shadow-medium: 0 0.5rem 1rem rgba(0, 0, 0, 0.18); /* Sombra más pronunciada para la barra lateral */
         }
 
         body {
-            background-color: var(--light-bg); /* Fondo gris claro */
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            color: var(--text-dark); /* Color de texto principal */
+            background-color: var(--light-bg);
+            font-family: 'Inter', sans-serif; /* Aplicando la fuente Inter */
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased; /* Suavizado de fuentes para mejor legibilidad */
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* Navbar Superior */
         .navbar-dark.bg-primary {
-            background-color: var(--primary-color) !important; /* Nuevo color primario */
+            background-color: var(--primary-color) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Borde sutil en la parte inferior */
+            padding-top: 0.75rem; /* Ajuste de padding */
+            padding-bottom: 0.75rem;
         }
 
-        .navbar-brand, .navbar-nav .nav-link, .navbar-nav .text-white {
+        .navbar-brand {
             color: var(--text-light) !important;
+            font-weight: 600; /* Un poco más audaz */
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-nav .nav-link, .navbar-nav .text-white {
+            color: var(--text-light) !important;
+            font-size: 0.95rem; /* Tamaño de fuente ligeramente menor para el texto de usuario */
         }
 
         .btn-outline-light {
-            border-color: var(--text-light);
+            border-color: rgba(255, 255, 255, 0.6);
             color: var(--text-light);
+            transition: all 0.25s ease-in-out; /* Transición más suave */
+            font-size: 0.9rem;
+            padding: 0.4rem 0.9rem;
         }
 
         .btn-outline-light:hover {
             background-color: var(--text-light);
             color: var(--primary-color);
+            border-color: var(--text-light); /* Borde también se llena */
+            transform: translateY(-1px); /* Efecto de elevación sutil */
         }
-
 
         /* Barra Lateral */
         aside {
             background-color: var(--dark-bg);
             color: var(--text-light);
-            min-width: 260px; /* Ancho ligeramente mayor */
+            min-width: 280px;
             min-height: 100vh;
-            padding: 1.5rem 1rem; /* Ajuste de padding */
-            box-shadow: 3px 0 8px rgba(0, 0, 0, 0.15); /* Sombra más definida */
+            padding: 1.8rem 1.4rem; /* Más padding para una sensación premium */
+            box-shadow: var(--shadow-medium); /* Sombra más definida */
             position: sticky;
             top: 0;
             left: 0;
             z-index: 1000;
+            border-right: 1px solid rgba(0, 0, 0, 0.1); /* Borde sutil a la derecha */
+        }
+
+        aside .text-center {
+            padding-bottom: 1.5rem; /* Espacio extra para el título */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Separador sutil */
+            margin-bottom: 1.5rem;
         }
 
         aside .text-center h4 {
-            color: #ffffff; /* Blanco puro para el título principal de la barra lateral */
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: 0.05em; /* Espaciado de letras para el título */
         }
 
         aside .text-muted {
-            color: rgba(255, 255, 255, 0.6) !important; /* Más suave para el texto secundario */
+            color: rgba(255, 255, 255, 0.5) !important; /* Más suave para el texto secundario */
+            font-size: 0.85rem;
         }
 
         aside .nav-link {
-            padding: 0.85rem 1.2rem; /* Más padding para los enlaces */
-            border-radius: 0.3rem; /* Bordes ligeramente más redondeados */
-            margin-bottom: 0.5rem; /* Espacio entre enlaces */
-            transition: background-color 0.3s ease, color 0.3s ease;
-            color: var(--text-light); /* Color por defecto de los enlaces */
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.2rem; /* Más padding para los enlaces */
+            border-radius: 0.5rem; /* Bordes más redondeados */
+            margin-bottom: 0.7rem; /* Espacio entre enlaces */
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+            color: var(--text-light);
+            font-weight: 500; /* Un poco más de peso a la fuente */
+            text-decoration: none; /* Asegura que no haya subrayado */
         }
 
         aside .nav-link:hover,
         aside .nav-link.active {
-            background-color: var(--accent-color); /* Fondo al pasar el ratón o si está activo */
-            color: #ffffff; /* Texto blanco brillante */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra sutil al hover/activo */
+            background-color: var(--accent-color);
+            color: #ffffff;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Sombra más grande al activo/hover */
+            transform: translateY(-3px); /* Efecto 3D sutil mejorado */
         }
 
         aside .nav-link i {
-            margin-right: 1rem;
-            font-size: 1.1rem; /* Iconos un poco más grandes */
+            margin-right: 1.2rem; /* Más espacio entre ícono y texto */
+            font-size: 1.25rem; /* Iconos más grandes */
+            flex-shrink: 0;
+            opacity: 0.9; /* Ligeramente transparente para un efecto más suave */
         }
+
+        aside .nav-link.active i {
+            opacity: 1; /* Icono completamente opaco cuando está activo */
+        }
+
 
         /* Contenido Principal */
         main {
             flex-grow: 1;
-            padding: 3rem; /* Más padding para el contenido */
+            padding: 3.5rem 4.5rem; /* Más padding para el contenido general */
             background-color: var(--light-bg);
         }
 
         header h1 {
-            color: var(--text-dark); /* Color oscuro para los títulos */
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border-color); /* Línea separadora */
-            padding-bottom: 1rem;
-            font-size: 2.2rem; /* Título un poco más grande */
-            font-weight: 600; /* Más audaz */
+            color: var(--text-dark);
+            margin-bottom: 2.8rem; /* Más espacio */
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.8rem; /* Más padding */
+            font-size: 2.6rem; /* Título de página más grande */
+            font-weight: 700; /* Más audaz */
+            letter-spacing: -0.02em; /* Ajuste sutil de espaciado para títulos */
+        }
+
+        /* Estilos para las Tarjetas de Contenido */
+        .card {
+            border: none;
+            border-radius: 1rem; /* Bordes aún más redondeados */
+            box-shadow: var(--shadow-light); /* Sombra suave para las tarjetas */
+            margin-bottom: 2.5rem; /* Más espacio entre tarjetas */
+            overflow: hidden; /* Asegura que el contenido respete el border-radius */
+        }
+
+        .card-header {
+            background-color: #e9eff6; /* Fondo sutilmente diferente */
+            border-bottom: 1px solid var(--border-color);
+            border-top-left-radius: 1rem; /* Aplica border-radius también al header */
+            border-top-right-radius: 1rem;
+            font-weight: 600;
+            padding: 1.2rem 2rem; /* Más padding */
+            color: var(--text-dark);
+            font-size: 1.1rem; /* Tamaño de fuente ligeramente mayor */
+        }
+
+        .card-body {
+            padding: 2.2rem; /* Más padding interno */
         }
 
         /* Pie de página de la barra lateral */
         aside .mt-auto {
-            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Borde más sutil */
+            border-top: 1px solid rgba(255, 255, 255, 0.12); /* Borde más definido */
+            padding-top: 1.8rem; /* Más espacio */
+            font-size: 0.8rem;
         }
 
-        /* Responsividad */
-        @media (max-width: 768px) {
+        /* Responsividad mejorada */
+        @media (max-width: 991.98px) {
+            /* Breakpoint para tabletas y móviles */
             .d-flex {
                 flex-direction: column;
             }
@@ -123,28 +197,56 @@
                 min-height: auto;
                 position: relative;
                 box-shadow: none;
-                padding-bottom: 1rem; /* Ajuste de padding para móviles */
+                padding: 1rem 1rem; /* Ajuste de padding para móviles */
+                border-right: none; /* Eliminar borde en móvil */
+            }
+
+            aside .text-center {
+                padding-bottom: 1rem;
+                margin-bottom: 1rem;
             }
 
             aside .nav {
                 flex-direction: row !important; /* Botones de navegación en fila */
                 flex-wrap: wrap;
                 justify-content: center;
+                gap: 0.7rem; /* Espacio entre los botones en móvil */
             }
 
             aside .nav-link {
                 flex: 1 1 auto; /* Permite que los enlaces se ajusten */
                 text-align: center;
-                margin: 0.2rem;
+                margin: 0; /* Eliminar margen vertical en móvil */
+                padding: 0.8rem 0.6rem; /* Ajustar padding para botones pequeños */
+                font-size: 0.9rem;
             }
 
             aside .nav-link i {
                 margin-right: 0;
                 display: block; /* Icono encima del texto */
                 margin-bottom: 0.3rem;
+                font-size: 1.1rem;
+            }
+
+            main {
+                padding: 2rem; /* Menos padding en pantallas pequeñas */
+            }
+
+            header h1 {
+                font-size: 2rem;
+                padding-bottom: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .card-header {
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .card-body {
+                padding: 1.5rem;
             }
         }
-
     </style>
 
     <th:block layout:fragment="styles"></th:block>
@@ -155,7 +257,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
     <div class="container-fluid">
         <a class="navbar-brand fw-bold" th:href="@{/admin/dashboard}">
-            <i class="bi bi-house-door-fill me-2"></i> Sistema de Matrícula
+            <img th:src="@{/images/logo-small.png}" alt="Logo" height="30" class="me-2 d-inline-block align-text-top"/>
+            Sistema de Gestión de Citas
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse"
                 aria-controls="sidebarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -167,7 +270,8 @@
                 <li class="nav-item d-flex align-items-center me-3">
                     <span class="text-white me-2">
                         <i class="bi bi-person-circle me-1"></i>
-                        Bienvenido, <span sec:authentication="name"></span>! </span>
+                        Bienvenido, <span sec:authentication="name"></span>!
+                    </span>
                 </li>
                 <li class="nav-item">
                     <form th:action="@{/logout}" method="post">
@@ -184,36 +288,41 @@
 <div class="d-flex">
     <aside class="bg-dark text-white p-3 d-flex flex-column">
         <div class="text-center mb-4">
-            <h4 class="text-white mt-2 mb-0">Administrador</h4>
-            <small class="text-muted" sec:authentication="authorities"></small></div>
+            <h4 class="text-white mt-2 mb-0">Panel Admin</h4>
+            <small class="text-muted">Gestión Completa</small>
+        </div>
 
         <ul class="nav flex-column gap-2 flex-grow-1">
             <li>
-                <a class="nav-link" th:href="@{/admin/dashboard}">
+                <a class="nav-link"
+                   th:href="@{/admin/dashboard}">
                     <i class="bi bi-speedometer2"></i> Dashboard
                 </a>
             </li>
             <li>
-                <a class="nav-link" th:href="@{/admin/usuarios}">
+                <a class="nav-link"
+                   th:href="@{/admin/usuarios}">
                     <i class="bi bi-people-fill"></i> Usuarios
                 </a>
             </li>
             <li>
-                <a class="nav-link" th:href="@{/admin/clientes}">
-                    <i class="bi bi-mortarboard-fill"></i> Clientes
+                <a class="nav-link"
+                   th:href="@{/admin/clientes}">
+                    <i class="bi bi-person-check-fill"></i> Clientes
                 </a>
             </li>
             <li>
-                <a class="nav-link" th:href="@{/admin/apoderados}">
-                    <i class="bi bi-person-check-fill"></i> Citas
+                <a class="nav-link"
+                   th:href="@{/admin/apoderados}">
+                    <i class="bi bi-calendar-check-fill"></i> Citas
                 </a>
             </li>
             <li>
-                <a class="nav-link" th:href="@{/admin/docentes}">
+                <a class="nav-link"
+                   th:href="@{/admin/docentes}">
                     <i class="bi bi-person-video2"></i> Empleados
                 </a>
             </li>
-
         </ul>
         <div class="mt-auto pt-3 border-top text-center">
             <small class="text-muted">&copy; [[${#dates.format(#dates.createNow(), 'yyyy')}]] Tu Institución</small>
@@ -222,9 +331,20 @@
 
     <main class="p-4 w-100 d-flex flex-column">
         <header layout:fragment="header">
-            <h1 class="h3"><i class="bi bi-house-fill me-2"></i>Panel de Administración</h1></header>
+            <h1 class="h3"><i class="bi bi-house-fill me-2"></i>Panel de Administración</h1>
+        </header>
 
         <section layout:fragment="content" class="flex-grow-1">
+            <div class="card">
+                <div class="card-header">
+                    Título del Contenido
+                </div>
+                <div class="card-body">
+                    <p>Aquí va el contenido específico de cada página.</p>
+                    <p>Puedes agregar tablas, formularios, gráficos, etc. Asegúrate de que los estilos de estos
+                        elementos también sean consistentes.</p>
+                </div>
+            </div>
         </section>
 
     </main>

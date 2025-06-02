@@ -111,6 +111,7 @@
                 border-color: #17a2b8;
                 color: white;
             }
+
             .btn-info:hover {
                 background-color: #138496;
                 border-color: #117a8b;
@@ -121,6 +122,7 @@
                 border-color: #dc3545;
                 color: white;
             }
+
             .btn-danger:hover {
                 background-color: #c82333;
                 border-color: #bd2130;
@@ -169,7 +171,8 @@
                             <th>Apellidos</th>
                             <th>Email</th>
                             <th>Teléfono</th>
-                            <th>Fecha Creación</th> <th>Acciones</th>
+                            <th>Fecha Creación</th>
+                            <th>Acciones</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -180,16 +183,17 @@
                             <td th:text="${cliente.email}">juan.perez@example.com</td>
                             <td th:text="${cliente.telefono}">+51 987654321</td>
                             <td th:text="${cliente.fechaCreacion}"></td>
-                            <a th:href="@{/admin/clientes/editar/{id}(id=${cliente.idCliente})}"
-                               class="btn btn-info btn-sm me-1" title="Editar">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <a th:href="@{/admin/clientes/eliminar/{id}(id=${cliente.idCliente})}"
-                               class="btn btn-danger btn-sm" title="Eliminar"
-                               onclick="return confirm('¿Estás seguro de que quieres eliminar este cliente?');">
-                                <i class="bi bi-trash-fill"></i>
-                            </a>
-                        </td>
+                            <td>
+                                <a th:href="@{/admin/clientes/editar/{id}(id=${cliente.idCliente})}"
+                                   class="btn btn-info btn-sm me-1" title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a th:href="@{/admin/clientes/eliminar/{id}(id=${cliente.idCliente})}"
+                                   class="btn btn-danger btn-sm" title="Eliminar"
+                                   onclick="return confirm('¿Estás seguro de que quieres eliminar este cliente?');">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </td>
                         </tr>
                         <tr th:if="${clientesBD.isEmpty()}">
                             <td colspan="7" class="text-center text-muted py-4">

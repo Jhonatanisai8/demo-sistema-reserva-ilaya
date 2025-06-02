@@ -13,6 +13,7 @@ import java.util.List;
 @Controller
 @RequestMapping(path = "/admin/clientes")
 public class AdminClienteController {
+
     private final ClienteServiceImpl clienteServiceImpl;
 
     @Autowired
@@ -23,8 +24,10 @@ public class AdminClienteController {
     @GetMapping(path = "")
     public String mostrarClientes(Model model) {
         //llamamos al metodo que lista los clientes de la base de datos
-        List<Cliente> clientesBD  = clienteServiceImpl.getClientes();
+        List<Cliente> clientesBD = clienteServiceImpl.getClientes();
         model.addAttribute("clientesBD", clientesBD);
         return "admin/lista-clientes";
     }
+
+
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "clientes")
 public class Cliente {
 
     @Id // esta anotacion define la llave primaria de una clase
@@ -25,6 +26,10 @@ public class Cliente {
 
     @Column(name = "fecha_creacion", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime fechaCreacion;
+
+    @OneToOne(fetch = FetchType.LAZY) // es indica que un usuario esta relacionado con un cliente
+    @JoinColumn(name = "id_usuario", unique = true, nullable = false)
+    private Usuario usuario;
 
     public Integer getIdCliente() {
         return idCliente;
@@ -69,4 +74,6 @@ public class Cliente {
     public void setFechaCreacion(LocalDateTime fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
+
+
 }
