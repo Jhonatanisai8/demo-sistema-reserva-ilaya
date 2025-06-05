@@ -2,8 +2,7 @@ package com.isai.demosistemacitasillaya.app.models;
 
 import com.isai.demosistemacitasillaya.app.models.emuns.EstadoReserva;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "reservas")
@@ -26,34 +25,35 @@ public class Reserva {
     @Column(name = "id_reserva")
     private Integer idReserva;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "estado", nullable = false)
-    private EstadoReserva estado;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cliente", nullable = false)
+    @NotNull(message = "El cliente que contrata es obligatorio.")
     private Cliente cliente;
-
-    @Column(name = "fecha_contradto")
-    private LocalDate fechaContradto;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_presentacion", nullable = false)
+    @NotNull(message = "La presentación a contratar es obligatoria.")
     private Presentacion presentacion;
 
-    @Column(name = "cantidad_entradas", nullable = false)
-    private Integer cantidadEntradas;
+    @NotNull(message = "La fecha del contrato es obligatoria.")
+    @PastOrPresent(message = "La fecha del contrato no puede ser en el futuro.")
+    @Column(name = "fecha_contrato", nullable = false)
+    private LocalDate fechaContrato;
 
-    @Column(name = "fecha_reserva", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime fechaReserva;
-
-
+    @NotNull(message = "El monto acordado es obligatorio.")
+    @DecimalMin(value = "0.0", inclusive = false, message = "El monto acordado debe ser un valor positivo.")
+    @Digits(integer = 10, fraction = 2, message = "El monto acordado debe tener hasta 10 dígitos enteros y 2 decimales.")
     @Column(name = "monto_acordado", nullable = false, precision = 10, scale = 2)
     private BigDecimal montoAcordado;
 
-    @NotNull
-    @Size(max = 500)
-    @Column(name = "notas_contrato")
+    @NotNull(message = "El estado del contrato es obligatorio.")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_reserva", nullable = false)
+    private EstadoReserva estado;
+
+    @Size(max = 500, message = "Las notas del contrato no pueden exceder los 500 caracteres.")
+    @Column(name = "notas_contrato", length = 500)
     private String notasContrato;
+
 
 }

@@ -6,14 +6,14 @@ public enum EstadoReserva {
     CANCELADA("Cancelada"),
     ASISTIO("Asistio");
 
-    private final String descripcion;
+    private final String displayName;
 
-    EstadoReserva(String descripcion) {
-        this.descripcion = descripcion;
+    EstadoReserva(String displayName) {
+        this.displayName = displayName;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String displayName() {
+        return displayName;
     }
 
 }
