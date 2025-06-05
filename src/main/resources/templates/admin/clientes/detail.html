@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout-admin.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:fragment="title">Detalles del Cliente</title>
+    <th:block layout:fragment="styles">
+        <style>
+            .details-card {
+                margin-top: 20px;
+                border: none;
+                border-radius: 0.75rem;
+                background-color: var(--card-bg, #ffffff);
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            }
+
+            .details-card .card-header {
+                background-color: var(--primary, #20c997);
+                color: var(--text-light, #e0e1e6);
+                padding: 1rem 1.5rem;
+                border-bottom: none;
+                border-radius: 0.75rem 0.75rem 0 0;
+            }
+
+            .details-card .card-body {
+                padding: 2rem;
+            }
+
+            .details-card .list-group-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: none;
+                padding: 0.75rem 0;
+                border-bottom: 1px dashed var(--border, #dee2e6);
+            }
+
+            .details-card .list-group-item:last-child {
+                border-bottom: none;
+            }
+
+            .details-card .list-group-item strong {
+                flex-basis: 35%;
+                color: var(--text-dark, #344767); /* Fallback */
+                font-weight: 600;
+            }
+
+            .details-card .list-group-item span {
+                flex-basis: 60%;
+                text-align: right;
+                color: #555;
+            }
+
+            .details-card .btn-back {
+                background-color: #6c757d;
+                border-color: #6c757d;
+                color: white;
+            }
+
+            .details-card .btn-back:hover {
+                background-color: #5a6268;
+                border-color: #545b62;
+            }
+
+        </style>
+    </th:block>
+</head>
+<body>
+
+<main layout:fragment="content" class="flex-grow-1">
+    <header class="mb-4">
+        <h1 class="h3">
+            <i class="bi bi-info-circle-fill me-2"></i>Detalles del Cliente
+        </h1>
+    </header>
+
+    <div class="container-fluid">
+        <div class="card shadow-sm details-card">
+            <div class="card-header">
+                <h4 th:text="'Cliente: ' + ${cliente.nombres} + ' ' + ${cliente.apellidos}">Detalles del Cliente</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>ID Cliente:</strong>
+                        <span th:text="${cliente.idCliente}">1</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Nombres:</strong>
+                        <span th:text="${cliente.nombres}">Juan</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Apellidos:</strong>
+                        <span th:text="${cliente.apellidos}">Perez Garcia</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Email:</strong>
+                        <span th:text="${cliente.usuario.email}">juan.perez@example.com</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Teléfono:</strong>
+                        <span th:text="${cliente.telefono != null && !cliente.telefono.isEmpty() ? cliente.telefono : 'N/A'}">987654321</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Nombre de Usuario:</strong>
+                        <span th:text="${cliente.usuario.nombreUsuario}">fan_urbano</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Rol de Usuario:</strong>
+                        <span th:text="${cliente.usuario.rol != null ? cliente.usuario.rol.name() : 'N/A'}">CLIENTE</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Fecha de Registro:</strong>
+                        <span th:text="${cliente.usuario.fechaRegistro != null ? #temporals.format(cliente.usuario.fechaRegistro, 'dd/MM/yyyy HH:mm') : 'Sin fecha'}">20/02/2024 14:35</span>
+                    </li>
+                </ul>
+
+                <div class="mt-4 text-end">
+                    <a th:href="@{/admin/clientes}" class="btn btn-back">
+                        <i class="bi bi-arrow-left-circle me-1"></i> Volver a la Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<th:block layout:fragment="scripts"></th:block>
+</body>
+</html>
