@@ -35,12 +35,11 @@ public class AdminLugaresController {
         return "admin/lugares/list";
     }
 
-    // Opcional: Método para ver detalles de un lugar específico
     @GetMapping("/{id}")
     public String verDetallesLugar(@PathVariable("id") Integer id, Model model) {
         Lugar lugar = lugarService.findLugarById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lugar no encontrado con ID: " + id));
         model.addAttribute("lugar", lugar);
-        return "admin/lugares/details";
+        return "admin/lugares/detail";
     }
 }
