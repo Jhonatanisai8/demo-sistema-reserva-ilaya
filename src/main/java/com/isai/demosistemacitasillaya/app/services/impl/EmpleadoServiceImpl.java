@@ -37,11 +37,11 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     @Override
     @Transactional
     public Empleado saveEmpleado(Empleado cliente) {
-        return null;
+        return empleadoRepository.save(cliente);
     }
 
     @Override
     public void deleteEmpleadoById(Integer idBuscado) {
-
+        empleadoRepository.deleteById(idBuscado);
     }
 }
