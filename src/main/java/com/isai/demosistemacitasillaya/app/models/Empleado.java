@@ -62,7 +62,6 @@ public class Empleado {
     @Column(name = "fecha_contratacion", columnDefinition = "DATE DEFAULT (CURRENT_DATE)")
     private LocalDate fechaContratacion;
 
-    @NotBlank
     @Column(name = "salario", precision = 10, scale = 2)
     private BigDecimal salario;
 
