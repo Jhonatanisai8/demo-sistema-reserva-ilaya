@@ -6,8 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title layout:fragment="title">Gestión de Clientes</title>
-
+    <title layout:fragment="title">Detalles de Clientes</title>
     <th:block layout:fragment="styles">
         <style>
             :root {
@@ -104,24 +103,16 @@
                 background-color: rgba(0, 0, 0, 0.08);
             }
 
-            .btn-info {
-                background-color: #17a2b8;
-                border-color: #17a2b8;
+            /* Estilo para el nuevo botón "Ver Detalles" */
+            .btn-view-details {
+                background-color: #007bff; /* Color azul de Bootstrap info */
+                border-color: #007bff;
+                color: white;
             }
 
-            .btn-info:hover {
-                background-color: #138496;
-                border-color: #117a8b;
-            }
-
-            .btn-danger {
-                background-color: #dc3545;
-                border-color: #dc3545;
-            }
-
-            .btn-danger:hover {
-                background-color: #c82333;
-                border-color: #bd2130;
+            .btn-view-details:hover {
+                background-color: #0056b3; /* Tono más oscuro al pasar el mouse */
+                border-color: #004085;
             }
         </style>
     </th:block>
@@ -131,7 +122,7 @@
 <main layout:fragment="content" class="flex-grow-1">
     <header class="mb-4">
         <h1 class="h3">
-            <i class="bi bi-person-check-fill me-2"></i>Gestión de Clientes
+            <i class="bi bi-person-check-fill me-2"></i>Detalles de Clientes
         </h1>
     </header>
 
@@ -140,9 +131,6 @@
         <div class="card shadow-sm">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4>Clientes Registrados</h4>
-                <a th:href="@{/admin/clientes/nuevo}" class="btn btn-light btn-sm">
-                    <i class="bi bi-plus-circle me-1"></i> Nuevo Cliente
-                </a>
             </div>
 
             <div class="card-body">
@@ -187,14 +175,9 @@
                                 27/05/2025 14:35
                             </td>
                             <td>
-                                <a th:href="@{/admin/clientes/editar/{id}(id=${cliente.idCliente})}"
-                                   class="btn btn-info btn-sm me-1" title="Editar">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <a th:href="@{/admin/clientes/eliminar/{id}(id=${cliente.idCliente})}"
-                                   class="btn btn-danger btn-sm" title="Eliminar"
-                                   onclick="return confirm('¿Estás seguro de que quieres eliminar este cliente?');">
-                                    <i class="bi bi-trash-fill"></i>
+                                <a th:href="@{/admin/clientes/{id}(id=${cliente.idCliente})}"
+                                   class="btn btn-view-details btn-sm" title="Ver Detalles">
+                                    <i class="bi bi-eye"></i> Ver Detalles
                                 </a>
                             </td>
                         </tr>
