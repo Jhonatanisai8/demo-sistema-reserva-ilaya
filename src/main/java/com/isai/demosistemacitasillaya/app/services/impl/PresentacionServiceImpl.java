@@ -21,6 +21,6 @@ public class PresentacionServiceImpl
 
     @Override
     public List<Presentacion> getPresentacionByTerminoBusqueda(String terminoBusqueda) {
-        return presentacionRepository.findByTituloContainingIgnoreCase(terminoBusqueda);
+        return presentacionRepository.findByTituloShow(terminoBusqueda);
     }
 }
