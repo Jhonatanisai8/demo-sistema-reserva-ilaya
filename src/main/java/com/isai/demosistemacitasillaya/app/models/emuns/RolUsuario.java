@@ -1,6 +1,6 @@
 package com.isai.demosistemacitasillaya.app.models.emuns;
 
-enum RolUsuario {
+public enum RolUsuario {
     CLIENTE,
     ADMINISTRADOR_ARTISTA
 }
