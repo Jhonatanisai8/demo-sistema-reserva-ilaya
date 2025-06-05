@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title layout:fragment="title">Detalles de la Reserva</title>
+    <title layout:fragment="title">Detalles del Contrato de Presentación</title>
     <th:block layout:fragment="styles">
         <style>
             .details-card {
@@ -72,21 +72,18 @@
 <main layout:fragment="content" class="flex-grow-1">
     <header class="mb-4">
         <h1 class="h3">
-            <i class="bi bi-ticket-fill me-2"></i>Detalles de la Reserva
-        </h1>
+            <i class="bi bi-file-earmark-text me-2"></i>Detalles del Contrato de Presentación </h1>
     </header>
 
     <div class="container-fluid">
         <div class="card shadow-sm details-card">
             <div class="card-header">
-                <h4 th:text="'Reserva #' + ${reserva.idReserva} + ' - ' + ${reserva.cliente.nombres} + ' ' + ${reserva.cliente.apellidos}">
-                    Detalles de la Reserva</h4>
-            </div>
+                <h4 th:text="'Contrato #' + ${reserva.idReserva} + ' - Cliente: ' + ${reserva.cliente.nombres} + ' ' + ${reserva.cliente.apellidos}">
+                    Detalles del Contrato</h4></div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <strong>ID Reserva:</strong>
-                        <span th:text="${reserva.idReserva}">1</span>
+                        <strong>ID Contrato:</strong> <span th:text="${reserva.idReserva}">1</span>
                     </li>
                     <li class="list-group-item">
                         <strong>Cliente:</strong>
@@ -101,8 +98,7 @@
                         <span th:text="${reserva.cliente.telefono != null && !reserva.cliente.telefono.isEmpty() ? reserva.cliente.telefono : 'N/A'}">987654321</span>
                     </li>
                     <li class="list-group-item">
-                        <strong>Show Reservado:</strong>
-                        <span th:text="${reserva.presentacion.tituloShow}">Noche de Rap Clásico</span>
+                        <strong>Show Contratado:</strong> <span th:text="${reserva.presentacion.tituloShow}">Noche de Rap Clásico</span>
                     </li>
                     <li class="list-group-item">
                         <strong>Lugar del Show:</strong>
@@ -113,34 +109,41 @@
                         <span th:text="${reserva.presentacion.lugar.direccion}">Calle Falsa 123, Lima</span>
                     </li>
                     <li class="list-group-item">
-                        <strong>Fecha y Hora del Show:</strong>
-                        <span th:text="${reserva.presentacion.fechaHora != null ? #temporals.format(reserva.presentacion.fechaHora, 'dd/MM/yyyy HH:mm') : 'Sin fecha'}">20/07/2025 20:00</span>
+                        <strong>Fecha del Show:</strong> <span
+                            th:text="${reserva.presentacion.fecha != null ? #temporals.format(reserva.presentacion.fecha, 'dd/MM/yyyy') : 'Sin fecha'}">20/07/2025</span>
                     </li>
                     <li class="list-group-item">
-                        <strong>Cantidad de Entradas:</strong>
-                        <span th:text="${reserva.cantidadEntradas}">2</span>
+                        <strong>Hora de Inicio del Show:</strong> <span
+                            th:text="${reserva.presentacion.horaInicio != null ? #temporals.format(reserva.presentacion.horaInicio, 'HH:mm') : 'Sin hora'}">20:00</span>
                     </li>
                     <li class="list-group-item">
-                        <strong>Precio por Entrada:</strong>
-                        <span th:text="${#numbers.formatCurrency(reserva.presentacion.precioEntrada)}">$75.00</span>
+                        <strong>Hora de Fin del Show:</strong> <span
+                            th:text="${reserva.presentacion.horaFin != null ? #temporals.format(reserva.presentacion.horaFin, 'HH:mm') : 'Sin hora'}">22:00</span>
                     </li>
                     <li class="list-group-item">
-                        <strong>Monto Total de la Reserva:</strong>
-                        <span th:text="${#numbers.formatCurrency(reserva.montoTotal)}">$150.00</span>
+                        <strong>Monto Acordado del Contrato:</strong> <span
+                            th:text="${#numbers.formatCurrency(reserva.montoAcordado)}">$150.00</span>
                     </li>
                     <li class="list-group-item">
-                        <strong>Estado de la Reserva:</strong>
-                        <span th:text="${reserva.estado}">CONFIRMADA</span>
+                        <strong>Estado del Contrato:</strong> <span
+                            th:text="${reserva.estado.displayName != null ? reserva.estado.displayName : reserva.estado.name()}">CONFIRMADA</span>
                     </li>
                     <li class="list-group-item">
-                        <strong>Fecha de la Reserva:</strong>
-                        <span th:text="${reserva.fechaReserva != null ? #temporals.format(reserva.fechaReserva, 'dd/MM/yyyy HH:mm') : 'Sin fecha'}">05/06/2025 10:00</span>
+                        <strong>Fecha de Firma del Contrato:</strong> <span
+                            th:text="${reserva.fechaContrato != null ? #temporals.format(reserva.fechaContrato, 'dd/MM/yyyy') : 'Sin fecha'}">05/06/2025</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Notas del Contrato:</strong> <span
+                            th:text="${reserva.notasContrato != null && !reserva.notasContrato.isEmpty() ? reserva.notasContrato : 'Sin notas'}">Notas adicionales aquí...</span>
                     </li>
                 </ul>
 
                 <div class="mt-4 text-end">
                     <a th:href="@{/admin/reservas}" class="btn btn-back">
-                        <i class="bi bi-arrow-left-circle me-1"></i> Volver a la Lista
+                        <i class="bi bi-arrow-left-circle me-1"></i> Volver a la Lista de Contratos
+                    </a>
+                    <a th:href="@{/admin/reservas/editar/{id}(id=${reserva.idReserva})}" class="btn btn-warning ms-2">
+                        <i class="bi bi-pencil me-1"></i> Editar Contrato
                     </a>
                 </div>
             </div>
