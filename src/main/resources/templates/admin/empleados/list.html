@@ -152,6 +152,11 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4>Listado de Empleados</h4>
             </div>
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <a th:href="@{/admin/empleados/registrar}" class="btn btn-light btn-sm">
+                    <i class="bi bi-plus-circle me-1"></i> Nuevo Empleado
+                </a>
+            </div>
 
             <div class="card-body">
                 <form th:action="@{/admin/empleados}" method="get"

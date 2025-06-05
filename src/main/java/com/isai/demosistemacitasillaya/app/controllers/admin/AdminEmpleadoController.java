@@ -1,6 +1,7 @@
 package com.isai.demosistemacitasillaya.app.controllers.admin;
 
 import com.isai.demosistemacitasillaya.app.models.Empleado;
+import com.isai.demosistemacitasillaya.app.models.emuns.EstadoEmpleado;
 import com.isai.demosistemacitasillaya.app.services.impl.EmpleadoServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -31,5 +32,19 @@ public class AdminEmpleadoController {
         model.addAttribute("empleadoList", empleadoList);
         model.addAttribute("terminoBusqueda", terminoBusqueda);
         return "admin/empleados/list";
+    }
+
+    @GetMapping(path = "/registrar")
+    public String mostrarFormularioRegistroEmpleado(
+            Model model) {
+        //si no hay un objeto de la tipo empleado osea en la vista no se cre
+        if (!model.containsAttribute("empleado")) {
+            model.addAttribute("empleado", new Empleado());
+        }
+
+        //agremos cargos a la vista
+        model.addAttribute("cargos", List.of("Contadora", "Secretaria", "Administrador"));
+        model.addAttribute("estadosEmpleado", EstadoEmpleado.values());
+        return "admin/empleados/create";
     }
 }
