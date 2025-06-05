@@ -2,12 +2,15 @@ package com.isai.demosistemacitasillaya.app.models;
 
 import com.isai.demosistemacitasillaya.app.models.emuns.EstadoReserva;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,9 +26,16 @@ public class Reserva {
     @Column(name = "id_reserva")
     private Integer idReserva;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado", nullable = false)
+    private EstadoReserva estado;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cliente", nullable = false)
     private Cliente cliente;
+
+    @Column(name = "fecha_contradto")
+    private LocalDate fechaContradto;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_presentacion", nullable = false)
@@ -37,10 +47,13 @@ public class Reserva {
     @Column(name = "fecha_reserva", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime fechaReserva;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "estado", nullable = false)
-    private EstadoReserva estado;
 
-    @Column(name = "monto_total", nullable = false, precision = 10, scale = 2)
-    private BigDecimal montoTotal;
+    @Column(name = "monto_acordado", nullable = false, precision = 10, scale = 2)
+    private BigDecimal montoAcordado;
+
+    @NotNull
+    @Size(max = 500)
+    @Column(name = "notas_contrato")
+    private String notasContrato;
+
 }
