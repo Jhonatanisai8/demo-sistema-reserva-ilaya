@@ -1,63 +1,43 @@
 package com.isai.demosistemacitasillaya.app.models;
 
+import com.isai.demosistemacitasillaya.app.models.emuns.RolUsuario;
 import jakarta.persistence.*;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "usuario")
-public class Usuario {
+@Table(name = "usuarios")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Usuario implements Serializable {
     @Id
-    @GeneratedValue
-            (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_usuario")
     private Integer idUsuario;
-    @Column(unique = true, length = 12)
+
+    @Column(name = "nombre_usuario", unique = true, nullable = false, length = 50)
     private String nombreUsuario;
-    private String contrasena;
-    @Column(length = 12)
-    private String rol;
-    @Column(name = "fecha_creacion", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime fechaCreacion;
 
-    public Integer getIdUsuario() {
-        return idUsuario;
-    }
+    @Column(name = "contrasena_hash", nullable = false, length = 255)
+    private String contrasenaHash;
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
-    }
+    @Column(name = "email", unique = true, nullable = false, length = 100)
+    private String email;
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rol", nullable = false)
+    private RolUsuario rol;
 
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
-    }
+    @Column(name = "fecha_registro", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime fechaRegistro;
 
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Cliente cliente;
 }

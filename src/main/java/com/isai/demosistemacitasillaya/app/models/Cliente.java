@@ -1,89 +1,41 @@
 package com.isai.demosistemacitasillaya.app.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "clientes")
-public class Cliente {
-
-    @Id // esta anotacion define la llave primaria de una clase
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // esta anotacion define como se va a generar esa llave
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Cliente implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_cliente")
     private Integer idCliente;
 
-    @Column(nullable = false, length = 20)
-    private String nombre;
-
-    @Column(nullable = false, length = 20)
-    private String apellido;
-
-    @Column(nullable = false, length = 40)
-    private String email;
-
-    @Column(nullable = false, length = 9)
-    private String telefono;
-
-    @Column(name = "fecha_creacion", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime fechaCreacion;
-
-    @OneToOne(fetch = FetchType.LAZY) // es indica que un usuario esta relacionado con un cliente
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", unique = true, nullable = false)
     private Usuario usuario;
 
-    public Integer getIdCliente() {
-        return idCliente;
-    }
+    @Column(name = "nombres", nullable = false, length = 50)
+    private String nombres;
 
-    public String getNombre() {
-        return nombre;
-    }
+    @Column(name = "apellidos", nullable = false, length = 50)
+    private String apellidos;
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    @Column(name = "telefono", length = 15)
+    private String telefono;
 
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
+    // Relación OneToMany con Reservas
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<Reserva> reservas = new HashSet<>();
 }
