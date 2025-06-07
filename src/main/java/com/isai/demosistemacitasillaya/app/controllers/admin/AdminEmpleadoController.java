@@ -5,10 +5,12 @@ import com.isai.demosistemacitasillaya.app.models.emuns.EstadoEmpleado;
 import com.isai.demosistemacitasillaya.app.services.impl.EmpleadoServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
@@ -73,4 +75,13 @@ public class AdminEmpleadoController {
             return "admin/empleados/create";
         }
     }
+
+    @GetMapping(path = "/{idEmpleado}")
+    public String verDetallesEmpleado(@PathVariable Integer idEmpleado, Model model) {
+        Empleado empleado = empleadoService.findEmpleadoById(idEmpleado)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Empleado no encontrado con ID: " + idEmpleado));
+        model.addAttribute("empleado", empleado);
+        return "admin/empleados/detail";
+    }
+
 }
