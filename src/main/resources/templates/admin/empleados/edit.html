@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title layout:fragment="title">Modificacion de datos de un Empleado</title>
+    <title layout:fragment="title">Modificación de datos de un Empleado</title>
 
     <th:block layout:fragment="styles">
         <style>
@@ -37,7 +37,7 @@
 
 <section layout:fragment="content" class="flex-grow-1">
     <header>
-        <h1 class="h3"><i class="bi bi-person-plus-fill me-2"></i>Modificación de un Empleado</h1>
+        <h1 class="h3"><i class="bi bi-person-gear me-2"></i>Modificación de un Empleado</h1>
     </header>
 
     <div class="container-fluid">
@@ -48,11 +48,12 @@
 
         <div class="card shadow-sm mt-4">
             <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">Formulario de Registro de Nuevo Apoderado</h4>
+                <h4 class="mb-0">Formulario de Modificación de Empleado</h4>
             </div>
             <div class="card-body">
-                <form th:action="@{/admin/empleados/registrar}" th:object="${empleado}" method="post">
-
+                <form th:action="@{/admin/empleados/editar/{id}(id=${empleado.idEmpleado})}" th:object="${empleado}"
+                      method="post">
+                    <input type="hidden" th:field="*{idEmpleado}">
                     <div class="form-section mb-4">
                         <h4>Datos Personales del Empleado</h4>
                         <div class="row">
@@ -98,8 +99,8 @@
                             </div>
 
                             <div class="form-group col-md-4 mb-3">
-                                <label for="genero" class="form-label">Cargo</label>
-                                <select class="form-select" id="genero" th:field="*{cargo}">
+                                <label for="cargo" class="form-label">Cargo</label>
+                                <select class="form-select" id="cargo" th:field="*{cargo}">
                                     <option value="">Seleccione</option>
                                     <option th:each="car : ${cargos}" th:value="${car}" th:text="${car}"></option>
                                 </select>
@@ -118,13 +119,14 @@
                             </div>
 
                             <div class="form-group col-md-4 mb-3">
-                                <label for="fechaContratacion" class="form-label">Fecha de Contración</label>
+                                <label for="fechaContratacion" class="form-label">Fecha de Contratación</label>
                                 <input type="date" class="form-control" id="fechaContratacion"
                                        th:field="*{fechaContratacion}">
                                 <p th:if="${#fields.hasErrors('fechaContratacion')}" th:errors="*{fechaContratacion}"
                                    class="error-message"></p>
                             </div>
-
+                        </div>
+                        <div class="row">
                             <div class="form-group col-md-6 mb-3">
                                 <label for="salario" class="form-label">Salario (S/.)</label>
                                 <input type="number" step="0.01" class="form-control" id="salario"
@@ -133,28 +135,24 @@
                                    class="error-message"></p>
                             </div>
 
-                            <div class="row">
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="estado" class="form-label">Estado <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-select" id="estado" th:field="*{estado}">
-                                        <option value="">Seleccione el estado</option>
-                                        <option th:each="estado : ${estadosEmpleado}"
-                                                th:value="${estado}"
-                                                th:text="${estado.displayName != null ? estado.displayName : estado.name()}">
-                                        </option>
-                                    </select>
-                                    <p th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"
-                                       class="error-message"></p>
-                                </div>
+                            <div class="form-group col-md-4 mb-3">
+                                <label for="estado" class="form-label">Estado <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="estado" th:field="*{estado}">
+                                    <option value="">Seleccione el estado</option>
+                                    <option th:each="estado : ${estadosEmpleado}"
+                                            th:value="${estado}"
+                                            th:text="${estado.displayName != null ? estado.displayName : estado.name()}">
+                                    </option>
+                                </select>
+                                <p th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"
+                                   class="error-message"></p>
                             </div>
                         </div>
-
                     </div>
-
                     <div class="d-flex justify-content-center gap-3">
                         <button type="submit" class="btn btn-primary btn-lg">
-                            <i class="bi bi-save me-2"></i> Modificar Apoderado
+                            <i class="bi bi-save me-2"></i> Actualizar Empleado
                         </button>
                         <a th:href="@{/admin/empleados}" class="btn btn-secondary btn-lg">
                             <i class="bi bi-x-circle me-2"></i> Cancelar
