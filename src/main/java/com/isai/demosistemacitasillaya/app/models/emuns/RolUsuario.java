@@ -1,6 +1,17 @@
 package com.isai.demosistemacitasillaya.app.models.emuns;
 
 public enum RolUsuario {
-    CLIENTE,
-    ADMINISTRADOR_ARTISTA
+    ADMIN("Administrador"),
+    CLIENTE("Cliente");
+
+    private final String displayName;
+
+    RolUsuario(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
 }
+//enum('ADMINISTRADOR_ARTISTA','CLIENTE')
