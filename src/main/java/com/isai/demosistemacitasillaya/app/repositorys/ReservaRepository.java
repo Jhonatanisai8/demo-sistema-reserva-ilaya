@@ -1,6 +1,7 @@
 package com.isai.demosistemacitasillaya.app.repositorys;
 
 import com.isai.demosistemacitasillaya.app.models.Reserva;
+import com.isai.demosistemacitasillaya.app.models.emuns.EstadoReserva;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,5 +32,7 @@ public interface ReservaRepository
             "LOWER(p.tituloShow) LIKE LOWER(CONCAT('%', :terminoBusqueda, '%')) OR " +
             "LOWER(l.nombreLugar) LIKE LOWER(CONCAT('%', :terminoBusqueda, '%'))")
     List<Reserva> searchReservas(@Param("terminoBusqueda") String terminoBusqueda);
+
+    long countByEstado(EstadoReserva estado);
 
 }

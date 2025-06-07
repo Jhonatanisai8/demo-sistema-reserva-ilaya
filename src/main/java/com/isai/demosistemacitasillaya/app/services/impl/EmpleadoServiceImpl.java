@@ -1,13 +1,16 @@
 package com.isai.demosistemacitasillaya.app.services.impl;
 
 import com.isai.demosistemacitasillaya.app.models.Empleado;
+import com.isai.demosistemacitasillaya.app.models.emuns.EstadoEmpleado;
 import com.isai.demosistemacitasillaya.app.repositorys.EmpleadoRepository;
 import com.isai.demosistemacitasillaya.app.services.EmpleadoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -43,5 +46,25 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     @Override
     public void deleteEmpleadoById(Integer idBuscado) {
         empleadoRepository.deleteById(idBuscado);
+    }
+
+    @Override
+    public Long countEmpleadosByEstado(EstadoEmpleado estadoEmpleado) {
+        return empleadoRepository.countByEstado(estadoEmpleado);
+    }
+
+
+    @Override
+    public Map<EstadoEmpleado, Long> getCantidadEmpleadoPorEstado() {
+        Map<EstadoEmpleado, Long> empleadosEstado = new EnumMap<>(EstadoEmpleado.class);
+        for (EstadoEmpleado estado : EstadoEmpleado.values()) {
+            empleadosEstado.put(estado, empleadoRepository.countByEstado(estado));
+        }
+        return empleadosEstado;
+    }
+
+    @Override
+    public Long getTotalEmpleados() {
+        return empleadoRepository.count();
     }
 }

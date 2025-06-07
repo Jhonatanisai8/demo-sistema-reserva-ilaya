@@ -1,6 +1,8 @@
 package com.isai.demosistemacitasillaya.app.repositorys;
 
 import com.isai.demosistemacitasillaya.app.models.Empleado;
+import com.isai.demosistemacitasillaya.app.models.emuns.EstadoEmpleado;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +19,5 @@ public interface EmpleadoRepository
             "OR LOWER(e.apellidos) LIKE LOWER(CONCAT('%', :terminoBusqueda, '%'))")
     List<Empleado> searchEmpleados(@Param("terminoBusqueda") String terminoBusqueda);
 
+    Long countByEstado(@NotNull EstadoEmpleado estado);
 }

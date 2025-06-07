@@ -8,4 +8,6 @@ public interface PresentacionService {
     List<Presentacion> getAllPresentaciones();
 
     List<Presentacion> getPresentacionByTerminoBusqueda(String terminoBusqueda);
+
+    Long getTotalPresentaciones();
 }

@@ -23,4 +23,9 @@ public class PresentacionServiceImpl
     public List<Presentacion> getPresentacionByTerminoBusqueda(String terminoBusqueda) {
         return presentacionRepository.findByTituloShow(terminoBusqueda);
     }
+
+    @Override
+    public Long getTotalPresentaciones() {
+        return presentacionRepository.count();
+    }
 }
