@@ -181,41 +181,53 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nombre</th>
+                            <th>Nombres</th>
                             <th>Apellidos</th>
-                            <th>Dni</th>
-                            <th>Fecha Nacimiento</th>
+                            <th>DNI</th>
+                            <th>Teléfono</th>
                             <th>Email</th>
                             <th>Cargo</th>
-                            <th>Fecha Contratacion</th>
+                            <th>F. Contratación</th>
                             <th>Salario</th>
                             <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="empleado : ${empleadoList}">
+                        <tr th:each="empleado : ${empleados}">
                             <td th:text="${empleado.idEmpleado}">1</td>
-                            <td th:text="${empleado.nombres}" class="text-truncate">Teatro Fénix</td>
-                            <td th:text="${empleado.apellidos}" class="text-truncate">Calle Falsa 123, Lima</td>
-                            <td th:text="${empleado.dni}">500</td>
-                            <td th:text="${empleado.fechaNacimiento}">500</td>
-                            <td th:text="${empleado.telefono}">500</td>
-                            <td th:text="${empleado.email}">500</td>
-                            <td th:text="${empleado.cargo}">500</td>
-                            <td th:text="${empleado.fechaContratacion}">500</td>
-                            <td th:text="${empleado.salario}">500</td>
-                            <td th:text="${empleado.estado}">500</td>
-
-                            <td>
-                                <a th:href="@{/admin/empleados/{idEmpleado}(idEmpleado=${empleado.idEmpleado})}"
-                                   class="btn btn-view-details btn-sm" title="Ver Detalles">
-                                    <i class="bi bi-eye"></i> Detalles
+                            <td th:text="${empleado.nombres}" class="text-truncate">Juan</td>
+                            <td th:text="${empleado.apellidos}" class="text-truncate">Pérez García</td>
+                            <td th:text="${empleado.dni}">12345678</td>
+                            <td th:text="${empleado.telefono}">987654321</td>
+                            <td th:text="${empleado.email}" class="text-truncate">juan.perez@example.com</td>
+                            <td th:text="${empleado.cargo}">Manager</td>
+                            <td th:text="${empleado.fechaContratacion != null ? #temporals.format(empleado.fechaContratacion, 'dd/MM/yyyy') : 'N/A'}">
+                                01/01/2023
+                            </td>
+                            <td th:text="${#numbers.formatCurrency(empleado.salario)}">$1500.00</td>
+                            <td th:text="${empleado.estado.displayName != null ? empleado.estado.displayName : empleado.estado.name()}">
+                                ACTIVO
+                            </td>
+                            <td class="actions-col">
+                                <a th:href="@{/admin/empleados/{id}(id=${empleado.idEmpleado})}"
+                                   class="btn btn-info btn-sm" title="Ver Detalles">
+                                    <i class="bi bi-eye"></i>
                                 </a>
+                                <a th:href="@{/admin/empleados/editar/{id}(id=${empleado.idEmpleado})}"
+                                   class="btn btn-warning btn-sm ms-1" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <button type="button" class="btn btn-danger btn-sm ms-1"
+                                        th:data-id="${empleado.idEmpleado}"
+                                        data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </button>
                             </td>
                         </tr>
-                        <tr th:if="${empleadoList.isEmpty()}">
-                            <td colspan="6" class="text-center text-muted py-4">
-                                No se encontraron Empleados.
+                        <tr th:if="${empleados.isEmpty()}">
+                            <td colspan="11" class="text-center text-muted py-4">
+                                No se encontraron empleados.
                             </td>
                         </tr>
                         </tbody>
