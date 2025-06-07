@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout-admin.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:fragment="title">Modificacion de datos de un Empleado</title>
+
+    <th:block layout:fragment="styles">
+        <style>
+            .form-section {
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                padding: 20px;
+                margin-bottom: 30px;
+                background-color: #fcfcfc;
+            }
+
+            .form-section h4 {
+                color: #007bff;
+                margin-bottom: 20px;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 10px;
+            }
+
+            .error-message {
+                color: red;
+                font-size: 0.875em;
+                margin-top: 0.25em;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+
+<section layout:fragment="content" class="flex-grow-1">
+    <header>
+        <h1 class="h3"><i class="bi bi-person-plus-fill me-2"></i>Modificación de un Empleado</h1>
+    </header>
+
+    <div class="container-fluid">
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Formulario de Registro de Nuevo Apoderado</h4>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/admin/empleados/registrar}" th:object="${empleado}" method="post">
+
+                    <div class="form-section mb-4">
+                        <h4>Datos Personales del Empleado</h4>
+                        <div class="row">
+                            <div class="form-group col-md-4 mb-3">
+                                <label for="nombres" class="form-label">Nombres <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="nombres" th:field="*{nombres}" required
+                                       maxlength="100">
+                                <p th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"
+                                   class="error-message"></p>
+                            </div>
+                            <div class="form-group col-md-4 mb-3">
+                                <label for="apellidos" class="form-label">Apellidos <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="apellidos" th:field="*{apellidos}" required
+                                       maxlength="100">
+                                <p th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"
+                                   class="error-message"></p>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label for="dni" class="form-label">DNI <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="dni" th:field="*{dni}" required
+                                       maxlength="20">
+                                <p th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" class="error-message"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4 mb-3">
+                                <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" id="fechaNacimiento"
+                                       th:field="*{fechaNacimiento}">
+                                <p th:if="${#fields.hasErrors('fechaNacimiento')}" th:errors="*{fechaNacimiento}"
+                                   class="error-message"></p>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="tel" class="form-control" id="telefono" th:field="*{telefono}"
+                                       maxlength="20">
+                                <p th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"
+                                   class="error-message"></p>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label for="genero" class="form-label">Cargo</label>
+                                <select class="form-select" id="genero" th:field="*{cargo}">
+                                    <option value="">Seleccione</option>
+                                    <option th:each="car : ${cargos}" th:value="${car}" th:text="${car}"></option>
+                                </select>
+                                <p th:if="${#fields.hasErrors('cargo')}" th:errors="*{cargo}"
+                                   class="error-message"></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6 mb-3">
+                                <label for="email" class="form-label">Email Personal</label>
+                                <input type="email" class="form-control" id="email" th:field="*{email}"
+                                       maxlength="100">
+                                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                                   class="error-message"></p>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label for="fechaContratacion" class="form-label">Fecha de Contración</label>
+                                <input type="date" class="form-control" id="fechaContratacion"
+                                       th:field="*{fechaContratacion}">
+                                <p th:if="${#fields.hasErrors('fechaContratacion')}" th:errors="*{fechaContratacion}"
+                                   class="error-message"></p>
+                            </div>
+
+                            <div class="form-group col-md-6 mb-3">
+                                <label for="salario" class="form-label">Salario (S/.)</label>
+                                <input type="number" step="0.01" class="form-control" id="salario"
+                                       th:field="*{salario}">
+                                <p th:if="${#fields.hasErrors('salario')}" th:errors="*{salario}"
+                                   class="error-message"></p>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="estado" class="form-label">Estado <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select" id="estado" th:field="*{estado}">
+                                        <option value="">Seleccione el estado</option>
+                                        <option th:each="estado : ${estadosEmpleado}"
+                                                th:value="${estado}"
+                                                th:text="${estado.displayName != null ? estado.displayName : estado.name()}">
+                                        </option>
+                                    </select>
+                                    <p th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"
+                                       class="error-message"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-save me-2"></i> Modificar Apoderado
+                        </button>
+                        <a th:href="@{/admin/empleados}" class="btn btn-secondary btn-lg">
+                            <i class="bi bi-x-circle me-2"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<th:block layout:fragment="scripts">
+</th:block>
+</body>
+</html>

@@ -33,7 +33,7 @@ public class AdminEmpleadoController {
         } else {
             empleadoList = empleadoService.findAllEmpleados();
         }
-        model.addAttribute("empleadoList", empleadoList);
+        model.addAttribute("empleados", empleadoList);
         model.addAttribute("terminoBusqueda", terminoBusqueda);
         return "admin/empleados/list";
     }
@@ -76,12 +76,22 @@ public class AdminEmpleadoController {
         }
     }
 
+
     @GetMapping(path = "/{idEmpleado}")
     public String verDetallesEmpleado(@PathVariable Integer idEmpleado, Model model) {
         Empleado empleado = empleadoService.findEmpleadoById(idEmpleado)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Empleado no encontrado con ID: " + idEmpleado));
         model.addAttribute("empleado", empleado);
         return "admin/empleados/detail";
+    }
+
+    @GetMapping(path = "/editar/{idEmpleado}")
+    public String mostrarFormularioEditarEmpleado(@PathVariable Integer idEmpleado, Model model) {
+        Empleado empleado = empleadoService.findEmpleadoById(idEmpleado)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Empleado no encontrado con ID: " + idEmpleado));
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("estadosEmpleado", EstadoEmpleado.values());
+        return "admin/empleados/edit";
     }
 
 }
