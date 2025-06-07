@@ -1,6 +1,8 @@
 package com.isai.demosistemacitasillaya.app.services;
 
 import com.isai.demosistemacitasillaya.app.models.Cliente;
+import com.isai.demosistemacitasillaya.app.models.Lugar;
+import com.isai.demosistemacitasillaya.app.models.Presentacion;
 import com.isai.demosistemacitasillaya.app.models.Reserva;
 import com.isai.demosistemacitasillaya.app.models.emuns.EstadoReserva;
 
@@ -19,7 +21,7 @@ public interface ReservaService {
 
     Map<EstadoReserva, Long> getCantidadReservasPorEstado();
 
-    Reserva crearReserva(Reserva reserva);
+    Reserva crearReserva(Reserva reserva, Presentacion presentacion, Lugar lugar);
 
     List<Reserva> getReservasByCliente(Cliente cliente);
 

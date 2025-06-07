@@ -1,6 +1,8 @@
 package com.isai.demosistemacitasillaya.app.services.impl;
 
 import com.isai.demosistemacitasillaya.app.models.Cliente;
+import com.isai.demosistemacitasillaya.app.models.Lugar;
+import com.isai.demosistemacitasillaya.app.models.Presentacion;
 import com.isai.demosistemacitasillaya.app.models.Reserva;
 import com.isai.demosistemacitasillaya.app.models.emuns.EstadoReserva;
 import com.isai.demosistemacitasillaya.app.repositorys.ReservaRepository;
@@ -20,6 +22,10 @@ import java.util.Optional;
 public class ReservaServiceImpl implements ReservaService {
 
     private final ReservaRepository reservaRepository;
+
+    private final PresentacionServiceImpl presentacionServiceImpl;
+
+    private final LugarServiceImpl lugarServiceImpl;
 
     @Override
     @Transactional
@@ -53,10 +59,15 @@ public class ReservaServiceImpl implements ReservaService {
         return reservasPorEstado;
     }
 
+    @Transactional
     @Override
-    public Reserva crearReserva(Reserva reserva) {
+    public Reserva crearReserva(Reserva reserva, Presentacion presentacion, Lugar lugar) {
+        Lugar lugarGuardado = lugarServiceImpl.saveLugar(lugar);
+        presentacion.setLugar(lugarGuardado);
+        Presentacion presentacionGuardada = presentacionServiceImpl.guardarPresentacion(presentacion);
+        reserva.setPresentacion(presentacionGuardada);
         if (reserva.getFechaContrato() == null) {
-            throw new IllegalArgumentException("Fecha de Contrato es obligatorio.");
+            throw new IllegalArgumentException("La fecha del contrato es obligatoria.");
         }
         if (reserva.getFechaContrato().isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("La fecha del contrato no puede ser en el futuro.");

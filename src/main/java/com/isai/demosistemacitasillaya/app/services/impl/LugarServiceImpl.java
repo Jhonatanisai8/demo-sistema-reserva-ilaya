@@ -33,4 +33,21 @@ public class LugarServiceImpl implements LugarService {
     public Optional<Lugar> findLugarById(Integer id) {
         return lugarRepository.findById(id);
     }
+
+    @Override
+    @Transactional
+    public Lugar saveLugar(Lugar lugar) {
+        if (lugar.getNombreLugar() == null || lugar.getNombreLugar().trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del lugar no puede estar vacío.");
+        }
+        if (lugar.getDireccion() == null || lugar.getDireccion().trim().isEmpty()) {
+            throw new IllegalArgumentException("La dirección del lugar no puede estar vacía.");
+        }
+        return lugarRepository.save(lugar);
+    }
+
+    @Override
+    public void deleteLugar(Integer idLugarRequest) {
+        lugarRepository.deleteById(idLugarRequest);
+    }
 }

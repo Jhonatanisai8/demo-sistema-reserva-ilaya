@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="[http://www.thymeleaf.org](http://www.thymeleaf.org)"
+      xmlns:layout="[http://www.ultraq.net.nz/thymeleaf/layout](http://www.ultraq.net.nz/thymeleaf/layout)"
+      layout:decorate="~{cliente/layout-cliente.html}">
+<head>
+    <meta charset="UTF-8">
+    <title layout:fragment="title">Proponer Nueva Presentación, Lugar y Contrato</title>
+</head>
+<body>
+
+<header layout:fragment="header">
+    <h1 class="h3"><i class="bi bi-plus-circle me-2"></i> Proponer Nueva Presentación, Lugar y Contrato</h1>
+</header>
+
+<section layout:fragment="content" class="flex-grow-1">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            Detalles de tu Propuesta (Presentación, Lugar y Contrato)
+        </div>
+        <div class="card-body">
+            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <span th:text="${successMessage}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span th:text="${errorMessage}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <form th:action="@{/cliente/nueva-cita}" method="post">
+                <h5 class="mt-4 mb-3">Detalles del Lugar Propuesto:</h5>
+                <div class="mb-3">
+                    <label for="nombreLugar" class="form-label">Nombre del Lugar:</label>
+                    <input type="text" class="form-control" id="nombreLugar" name="nombreLugar"
+                           th:field="*{lugar.nombreLugar}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="direccion" class="form-label">Dirección del Lugar:</label>
+                    <input type="text" class="form-control" id="direccion" name="direccion"
+                           th:field="*{lugar.direccion}" required>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="capacidadTotal" class="form-label">Capacidad Total:</label>
+                        <input type="number" class="form-control" id="capacidadTotal" name="capacidadTotal"
+                               th:field="*{lugar.capacidadTotal}" min="1" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="contactoTelefono" class="form-label">Teléfono de Contacto del Lugar
+                            (Opcional):</label>
+                        <input type="text" class="form-control" id="contactoTelefono" name="contactoTelefono"
+                               th:field="*{lugar.contactoTelefono}">
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <h5 class="mt-4 mb-3">Detalles de la Presentación Propuesta:</h5>
+                <div class="mb-3">
+                    <label for="tituloShow" class="form-label">Título del Show:</label>
+                    <input type="text" class="form-control" id="tituloShow" name="tituloShow"
+                           th:field="*{presentacion.tituloShow}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label">Descripción del Show (Opcional):</label>
+                    <textarea class="form-control" id="descripcion" name="descripcion"
+                              th:field="*{presentacion.descripcion}" rows="3"></textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="fecha" class="form-label">Fecha del Show:</label>
+                        <input type="date" class="form-control" id="fecha" name="fecha" th:field="*{presentacion.fecha}"
+                               th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="horaInicio" class="form-label">Hora de Inicio:</label>
+                        <input type="time" class="form-control" id="horaInicio" name="horaInicio"
+                               th:field="*{presentacion.horaInicio}" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="horaFin" class="form-label">Hora de Fin:</label>
+                        <input type="time" class="form-control" id="horaFin" name="horaFin"
+                               th:field="*{presentacion.horaFin}" required>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <h5 class="mb-3">Detalles del Contrato:</h5>
+                <div class="mb-3">
+                    <label for="montoAcordado" class="form-label">Monto Acordado (USD):</label>
+                    <input type="number" class="form-control" id="montoAcordado" name="montoAcordado"
+                           th:field="*{reserva.montoAcordado}" step="0.01" min="0.01" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="notasContrato" class="form-label">Notas del Contrato (Opcional):</label>
+                    <textarea class="form-control" id="notasContrato" name="notasContrato"
+                              th:field="*{reserva.notasContrato}" rows="3"></textarea>
+                </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <a th:href="@{/cliente/reservaciones}" class="btn btn-secondary me-2">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Proponer, Crear y Contratar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

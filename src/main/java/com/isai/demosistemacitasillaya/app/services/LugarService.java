@@ -12,4 +12,8 @@ public interface LugarService {
     List<Lugar> findAllLugares();
 
     Optional<Lugar> findLugarById(Integer id);
+
+    Lugar saveLugar(Lugar lugar);
+
+    void deleteLugar(Integer idLugarRequest);
 }

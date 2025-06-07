@@ -13,4 +13,6 @@ public interface PresentacionService {
     Long getTotalPresentaciones();
 
     Optional<Presentacion> getPresentacionById(Integer idPresentacionRequest);
+
+    Presentacion guardarPresentacion(Presentacion presentacion);
 }
