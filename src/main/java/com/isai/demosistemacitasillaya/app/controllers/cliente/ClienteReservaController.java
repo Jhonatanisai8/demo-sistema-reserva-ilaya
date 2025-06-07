@@ -1,7 +1,6 @@
 package com.isai.demosistemacitasillaya.app.controllers.cliente;
 
-import com.isai.demosistemacitasillaya.app.models.Cliente;
-import com.isai.demosistemacitasillaya.app.models.Usuario;
+import com.isai.demosistemacitasillaya.app.models.*;
 import com.isai.demosistemacitasillaya.app.services.impl.ClienteServiceImpl;
 import com.isai.demosistemacitasillaya.app.services.impl.PresentacionServiceImpl;
 import com.isai.demosistemacitasillaya.app.services.impl.ReservaServiceImpl;
@@ -46,4 +45,14 @@ public class ClienteReservaController {
         model.addAttribute("reservas", reservaServiceImpl.getReservasByCliente(cliente));
         return "cliente/reservaciones/list";
     }
+
+    @GetMapping(path = "/nueva-reserva")
+    public String mostrarFormularioNuevaReserva(Model model) {
+        model.addAttribute("reserva", new Reserva());
+        model.addAttribute("presentacion", new Presentacion());
+        model.addAttribute("lugar", new Lugar());
+        return "cliente/reservaciones/nueva-reserva";
+    }
+
+
 }
