@@ -3,7 +3,6 @@ package com.isai.demosistemacitasillaya.app.models.emuns;
 public enum RolUsuario {
     ADMIN("Administrador"),
     CLIENTE("Cliente");
-
     private final String displayName;
 
     RolUsuario(String displayName) {
@@ -14,4 +13,3 @@ public enum RolUsuario {
         return displayName;
     }
 }
-//enum('ADMINISTRADOR_ARTISTA','CLIENTE')

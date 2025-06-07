@@ -6,6 +6,7 @@ import com.isai.demosistemacitasillaya.app.services.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,5 +38,20 @@ public class UsuarioServiceImpl
     @Override
     public Boolean existsByEmail(String email) {
         return usuarioRepository.existsByEmail(email);
+    }
+
+
+    public List<Usuario> getAllUsuarios() {
+        return usuarioRepository.findAll();
+    }
+
+    public List<Usuario> searchUsuarios(String terminoBusqueda) {
+        if (terminoBusqueda == null || terminoBusqueda.trim().isEmpty()) {
+            return usuarioRepository.findAll(); // Si el término está vacío, devuelve todos
+        }
+        return usuarioRepository.findByNombreUsuarioContainingIgnoreCaseOrEmailContainingIgnoreCase(terminoBusqueda, terminoBusqueda);
+    }
+    public Optional<Usuario> getUsuarioById(Integer id) {
+        return usuarioRepository.findById(id);
     }
 }

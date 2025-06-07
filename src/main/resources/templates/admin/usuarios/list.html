@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout-admin.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:fragment="title">Gestión de Usuarios</title>
+
+    <th:block layout:fragment="styles">
+        <style>
+            :root {
+                --primary: #20c997;
+                --primary-dark: #138d75;
+                --bg-dark: #212b36;
+                --bg-light: #f0f2f5;
+                --text-light: #e0e1e6;
+                --text-dark: #344767;
+                --accent: #4CAF50;
+                --border: #dee2e6;
+                --card-bg: #ffffff;
+            }
+
+            .card {
+                border: none;
+                border-radius: 0.75rem;
+                background-color: var(--card-bg);
+            }
+
+            .card-header {
+                background-color: var(--primary);
+                color: var(--text-light);
+                padding: 1rem 1.5rem;
+                border-bottom: none;
+            }
+
+            .card-header h4 {
+                margin: 0;
+            }
+
+            .btn-light {
+                background-color: var(--bg-light);
+                color: var(--primary);
+                border: 1px solid var(--primary);
+                transition: 0.2s;
+            }
+
+            .btn-light:hover,
+            .btn-outline-primary:focus {
+                background-color: var(--primary);
+                color: var(--text-light);
+            }
+
+            .form-control {
+                border-radius: 0.5rem;
+                border-color: var(--border);
+            }
+
+            .btn-outline-primary,
+            .btn-outline-secondary {
+                transition: all 0.2s ease-in-out;
+            }
+
+            .btn-outline-primary:hover {
+                background-color: var(--primary);
+                color: var(--text-light);
+            }
+
+            .btn-outline-secondary:hover {
+                background-color: var(--text-dark);
+                color: var(--text-light);
+            }
+
+            .table {
+                margin-bottom: 0;
+            }
+
+            .table thead {
+                background-color: var(--bg-dark);
+                color: var(--text-light);
+            }
+
+            .table th {
+                font-weight: 600;
+                padding: 1rem 1.25rem;
+                border-bottom: 2px solid var(--primary);
+            }
+
+            .table td {
+                vertical-align: middle;
+                padding: 0.85rem 1.25rem;
+                max-width: 200px; /* Limita el ancho de las celdas */
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .table-striped tbody tr:nth-of-type(odd) {
+                background-color: rgba(0, 0, 0, 0.03);
+            }
+
+            .table-hover tbody tr:hover {
+                background-color: rgba(0, 0, 0, 0.08);
+            }
+
+            /* Estilos para los botones de acción */
+            .btn-info { /* Detalles */
+                background-color: #17a2b8;
+                border-color: #17a2b8;
+            }
+
+            .btn-info:hover {
+                background-color: #138496;
+                border-color: #117a8b;
+            }
+
+            .btn-warning { /* Editar */
+                background-color: #ffc107;
+                border-color: #ffc107;
+                color: #212529; /* Texto oscuro para contraste */
+            }
+
+            .btn-warning:hover {
+                background-color: #e0a800;
+                border-color: #d39e00;
+            }
+
+            .btn-danger { /* Eliminar */
+                background-color: #dc3545;
+                border-color: #dc3545;
+            }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+                border-color: #bd2130;
+            }
+
+            .btn-view-details {
+                background-color: #007bff; /* Color azul de Bootstrap info */
+                border-color: #007bff;
+                color: white;
+            }
+
+            .btn-view-details:hover {
+                background-color: #0056b3; /* Tono más oscuro al pasar el mouse */
+                border-color: #004085;
+            }
+
+            .btn-success { /* Botón de Nuevo Usuario */
+                background-color: #28a745;
+                border-color: #28a745;
+                color: white;
+            }
+
+            .btn-success:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+            }
+
+            .actions-col { /* Ajuste para la columna de acciones */
+                max-width: none;
+                white-space: nowrap;
+                overflow: visible;
+                text-overflow: clip;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+
+<main layout:fragment="content" class="flex-grow-1">
+    <header class="mb-4">
+        <h1 class="h3">
+            <i class="bi bi-person-lines-fill me-2"></i>Gestión de Usuarios
+        </h1>
+    </header>
+
+    <div class="container-fluid">
+        <!-- Mensajes de éxito y error (útiles para feedback después de acciones CRUD) -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4>Listado de Usuarios Registrados</h4>
+                <!-- Botón para añadir un nuevo usuario (opcional, si el admin puede crear usuarios) -->
+                <!-- Si el registro es solo por el formulario público /register, este botón no es necesario -->
+                <a th:href="@{/admin/usuarios/nuevo}" class="btn btn-success">
+                    <i class="bi bi-person-plus me-2"></i> Nuevo Usuario
+                </a>
+            </div>
+
+            <div class="card-body">
+                <form th:action="@{/admin/usuarios}" method="get"
+                      class="d-flex flex-wrap align-items-center mb-4" role="search">
+                    <label for="buscar" class="visually-hidden">Buscar Usuario</label>
+                    <input id="buscar" type="text" name="terminoBusqueda"
+                           class="form-control me-2 flex-grow-1 mb-2 mb-md-0"
+                           placeholder="Buscar por nombre de usuario o email..."
+                           th:value="${terminoBusqueda}" aria-label="Campo de búsqueda">
+
+                    <button type="submit" class="btn btn-outline-primary me-2 mb-2 mb-md-0">
+                        <i class="bi bi-search"></i> Buscar
+                    </button>
+
+                    <a th:href="@{/admin/usuarios}" class="btn btn-outline-secondary mb-2 mb-md-0">
+                        <i class="bi bi-x-circle"></i> Limpiar
+                    </a>
+                </form>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre de Usuario</th>
+                            <th>Email</th>
+                            <th>Rol</th>
+                            <th>Fecha de Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="usuario : ${usuarios}">
+                            <td th:text="${usuario.idUsuario}">1</td>
+                            <td th:text="${usuario.nombreUsuario}" class="text-truncate">nombre.usuario</td>
+                            <td th:text="${usuario.email}" class="text-truncate">usuario@example.com</td>
+                            <td th:text="${usuario.rol.displayName != null ? usuario.rol.displayName : usuario.rol.name()}">
+                                Cliente
+                            </td>
+                            <td th:text="${usuario.fechaRegistro != null ? #temporals.format(usuario.fechaRegistro, 'dd/MM/yyyy HH:mm') : 'N/A'}">
+                                01/01/2024 10:30
+                            </td>
+                            <td class="actions-col">
+                                <!-- Botones de acción, puedes ajustarlos según necesites -->
+                                <a th:href="@{/admin/usuarios/{id}(id=${usuario.idUsuario})}"
+                                   class="btn btn-info btn-sm" title="Ver Detalles">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a th:href="@{/admin/usuarios/editar/{id}(id=${usuario.idUsuario})}"
+                                   class="btn btn-warning btn-sm ms-1" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <button type="button" class="btn btn-danger btn-sm ms-1"
+                                        th:data-id="${usuario.idUsuario}"
+                                        data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr th:if="${usuarios.isEmpty()}">
+                            <td colspan="6" class="text-center text-muted py-4">
+                                No se encontraron usuarios.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar a este usuario? Esta acción es irreversible y también eliminará
+                    sus datos de cliente asociado.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <form id="deleteForm" th:action="@{/admin/usuarios/eliminar}" method="post">
+                        <input type="hidden" name="id" id="deleteUsuarioId">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<th:block layout:fragment="scripts">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var confirmDeleteModal = document.getElementById('confirmDeleteModal');
+            if (confirmDeleteModal) {
+                confirmDeleteModal.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
+                    var usuarioId = button.getAttribute('data-id');
+                    var modalInput = confirmDeleteModal.querySelector('#deleteUsuarioId');
+                    modalInput.value = usuarioId;
+                });
+            }
+        });
+    </script>
+</th:block>
+</body>
+</html>

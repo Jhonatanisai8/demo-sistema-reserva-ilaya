@@ -70,7 +70,7 @@ public class AuthController {
         try {
             //  encriptamos la contraseña antes de guardar en la base de datos
             usuario.setContrasenaHash(passwordEncoder.encode(usuario.getContrasenaHash()));
-            usuario.setRol(RolUsuario.ADMIN);
+            usuario.setRol(RolUsuario.CLIENTE);
             usuario.setFechaRegistro(LocalDateTime.now());
 
             Usuario savedUsuario = usuarioService.saveUsuario(usuario);
