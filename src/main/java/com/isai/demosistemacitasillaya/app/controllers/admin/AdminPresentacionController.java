@@ -32,12 +32,5 @@ public class AdminPresentacionController {
         return "admin/presentaciones/list";
     }
 
-//    @GetMapping("/{id}")
-//    public String verDetallesReserva(@PathVariable("id") Integer id, Model model) {
-//        Reserva reserva = reservaServiceImpl.findReservaById(id)
-//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reserva no encontrada con ID: " + id));
-//        model.addAttribute("reserva", reserva);
-//        return "admin/presentacions/detail";
-//    }
 
 }
