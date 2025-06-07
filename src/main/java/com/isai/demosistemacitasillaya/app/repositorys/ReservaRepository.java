@@ -1,5 +1,6 @@
 package com.isai.demosistemacitasillaya.app.repositorys;
 
+import com.isai.demosistemacitasillaya.app.models.Cliente;
 import com.isai.demosistemacitasillaya.app.models.Reserva;
 import com.isai.demosistemacitasillaya.app.models.emuns.EstadoReserva;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,5 +35,7 @@ public interface ReservaRepository
     List<Reserva> searchReservas(@Param("terminoBusqueda") String terminoBusqueda);
 
     long countByEstado(EstadoReserva estado);
+
+    List<Reserva> findByClienteOrderByFechaContratoAsc(Cliente cliente);
 
 }

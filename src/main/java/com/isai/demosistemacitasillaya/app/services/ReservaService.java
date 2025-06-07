@@ -1,5 +1,6 @@
 package com.isai.demosistemacitasillaya.app.services;
 
+import com.isai.demosistemacitasillaya.app.models.Cliente;
 import com.isai.demosistemacitasillaya.app.models.Reserva;
 import com.isai.demosistemacitasillaya.app.models.emuns.EstadoReserva;
 
@@ -17,4 +18,10 @@ public interface ReservaService {
     Long countReservasSegunEstado(EstadoReserva estado);
 
     Map<EstadoReserva, Long> getCantidadReservasPorEstado();
+
+    Reserva crearReserva(Reserva reserva);
+
+    List<Reserva> getReservasByCliente(Cliente cliente);
+
+    void cancelarReserva(Integer idReserva);
 }

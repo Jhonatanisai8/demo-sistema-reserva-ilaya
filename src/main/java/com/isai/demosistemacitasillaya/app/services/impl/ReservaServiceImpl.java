@@ -1,5 +1,6 @@
 package com.isai.demosistemacitasillaya.app.services.impl;
 
+import com.isai.demosistemacitasillaya.app.models.Cliente;
 import com.isai.demosistemacitasillaya.app.models.Reserva;
 import com.isai.demosistemacitasillaya.app.models.emuns.EstadoReserva;
 import com.isai.demosistemacitasillaya.app.repositorys.ReservaRepository;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -49,5 +51,36 @@ public class ReservaServiceImpl implements ReservaService {
             reservasPorEstado.put(estado, reservaRepository.countByEstado(estado));
         }
         return reservasPorEstado;
+    }
+
+    @Override
+    public Reserva crearReserva(Reserva reserva) {
+        if (reserva.getFechaContrato() == null) {
+            throw new IllegalArgumentException("Fecha de Contrato es obligatorio.");
+        }
+        if (reserva.getFechaContrato().isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("La fecha del contrato no puede ser en el futuro.");
+        }
+        return reservaRepository.save(reserva);
+    }
+
+    @Override
+    @Transactional
+    public List<Reserva> getReservasByCliente(Cliente cliente) {
+        return reservaRepository.findByClienteOrderByFechaContratoAsc(cliente);
+    }
+
+    @Override
+    @Transactional
+    public void cancelarReserva(Integer idReserva) {
+        Reserva reservaBD = reservaRepository.findById(idReserva).
+                orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada"));
+        if (reservaBD.getEstado() == EstadoReserva.CONFIRMADA || reservaBD.getEstado() == EstadoReserva.PENDIENTE) {
+            reservaBD.setEstado(EstadoReserva.CANCELADA);
+            reservaRepository.save(reservaBD);
+        } else {
+            throw new IllegalArgumentException("La reserva no se puede cancelar en su estado actual: " + reservaBD.getEstado().displayName());
+        }
+
     }
 }

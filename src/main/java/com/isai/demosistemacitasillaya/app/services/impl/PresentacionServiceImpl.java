@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,5 +28,10 @@ public class PresentacionServiceImpl
     @Override
     public Long getTotalPresentaciones() {
         return presentacionRepository.count();
+    }
+
+    @Override
+    public Optional<Presentacion> getPresentacionById(Integer idPresentacionRequest) {
+        return presentacionRepository.findById(idPresentacionRequest);
     }
 }

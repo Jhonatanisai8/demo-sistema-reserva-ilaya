@@ -1,7 +1,9 @@
 package com.isai.demosistemacitasillaya.app.services.impl;
 
 import com.isai.demosistemacitasillaya.app.models.Cliente;
+import com.isai.demosistemacitasillaya.app.models.Usuario;
 import com.isai.demosistemacitasillaya.app.repositorys.ClienteRepository;
+import com.isai.demosistemacitasillaya.app.repositorys.UsuarioRepository;
 import com.isai.demosistemacitasillaya.app.services.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository clienteRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @Override
     @Transactional
@@ -47,5 +50,14 @@ public class ClienteServiceImpl implements ClienteService {
     @Transactional
     public void deleteClienteById(Integer idBuscado) {
         clienteRepository.deleteById(idBuscado);
+    }
+
+    public Optional<Cliente> getClienteByUsuario(Usuario usuario) {
+        return clienteRepository.findByUsuario(usuario);
+    }
+
+    public Optional<Cliente> getClienteByUsuarioNombre(String nombreUsuario) {
+        return usuarioRepository.findByNombreUsuario(nombreUsuario)
+                .flatMap(usuario -> clienteRepository.findByUsuario(usuario));
     }
 }

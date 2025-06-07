@@ -1,12 +1,14 @@
 package com.isai.demosistemacitasillaya.app.repositorys;
 
 import com.isai.demosistemacitasillaya.app.models.Cliente;
+import com.isai.demosistemacitasillaya.app.models.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
@@ -20,4 +22,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
     @Query("SELECT c FROM Cliente c JOIN FETCH c.usuario")
     List<Cliente> findAllWithUsuario();
+
+    Optional<Cliente> findByUsuario(Usuario usuario);
+
 }
