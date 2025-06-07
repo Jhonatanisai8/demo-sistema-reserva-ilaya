@@ -89,15 +89,15 @@ public class ReservaServiceImpl implements ReservaService {
     @Override
     @Transactional
     public void cancelarReserva(Integer idReserva) {
-        Reserva reservaBD = reservaRepository.findById(idReserva).
-                orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada"));
-        if (reservaBD.getEstado() == EstadoReserva.CONFIRMADA || reservaBD.getEstado() == EstadoReserva.PENDIENTE) {
-            reservaBD.setEstado(EstadoReserva.CANCELADA);
-            reservaRepository.save(reservaBD);
-        } else {
-            throw new IllegalArgumentException("La reserva no se puede cancelar en su estado actual: " + reservaBD.getEstado().displayName());
-        }
+        Reserva reserva = reservaRepository.findById(idReserva)
+                .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada con ID: " + idReserva));
 
+        if (reserva.getEstado() == EstadoReserva.CONFIRMADA || reserva.getEstado() == EstadoReserva.PENDIENTE) {
+            reserva.setEstado(EstadoReserva.CANCELADA);
+            reservaRepository.save(reserva);
+        } else {
+            throw new IllegalArgumentException("La reserva no se puede cancelar en su estado actual: " + reserva.getEstado().displayName());
+        }
     }
 
     //metodos para la logica del admin

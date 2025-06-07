@@ -11,10 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
@@ -79,6 +76,24 @@ public class ClienteReservaController {
             ex.printStackTrace();
             return "redirect:/cliente/reservaciones/nueva-reserva";
         }
+    }
+
+    @PostMapping("/cancelar")
+    public String cancelarCita(@RequestParam("idReserva") Integer idReserva, RedirectAttributes redirectAttributes) {
+        try {
+            Reserva reserva = reservaServiceImpl.findReservaById(idReserva)
+                    .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada."));
+            if (!reserva.getCliente().getIdCliente().equals(obtenerClienteConectado().getIdCliente())) {
+                throw new IllegalStateException("No tienes permiso para cancelar esta reserva.");
+            }
+            reservaServiceImpl.cancelarReserva(idReserva);
+            redirectAttributes.addFlashAttribute("successMessage", "Reserva cancelada correctamente.");
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error al cancelar la reserva: " + e.getMessage());
+        }
+        return "redirect:/cliente/reservaciones";
     }
 
 }

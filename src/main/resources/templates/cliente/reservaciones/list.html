@@ -98,7 +98,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, mantener contrato
                     </button>
-                    <form id="cancelForm" th:action="@{/cliente/citas/cancelar}" method="post">
+                    <form id="cancelForm" th:action="@{/cliente/reservaciones/cancelar}" method="post">
                         <input type="hidden" name="idReserva" id="cancelReservaId">
                         <button type="submit" class="btn btn-danger">Sí, Cancelar Contrato</button>
                     </form>
