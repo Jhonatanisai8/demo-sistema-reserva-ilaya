@@ -133,6 +133,29 @@
                 background-color: #0056b3; /* Tono más oscuro al pasar el mouse */
                 border-color: #004085;
             }
+
+            /* Estilos para los botones de estado */
+            .btn-success {
+                background-color: #28a745;
+                border-color: #28a745;
+                color: white;
+            }
+
+            .btn-success:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+            }
+
+            .btn-secondary {
+                background-color: #6c757d;
+                border-color: #6c757d;
+                color: white;
+            }
+
+            .btn-secondary:hover {
+                background-color: #5a6268;
+                border-color: #545b62;
+            }
         </style>
     </th:block>
 </head>
@@ -153,6 +176,15 @@
             </div>
 
             <div class="card-body">
+                <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <span th:text="${successMessage}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span th:text="${errorMessage}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
                 <form th:action="@{/admin/reservas}" method="get"
                       class="d-flex flex-wrap align-items-center mb-4" role="search">
                     <label for="buscar" class="visually-hidden">Buscar Contrato</label>
@@ -222,18 +254,50 @@
                             </td>
                             <td th:text="${reserva.notasContrato}" class="text-truncate">Notas adicionales aquí...</td>
                             <td>
-                                <a th:href="@{/admin/reservas/{id}(id=${reserva.idReserva})}"
-                                   class="btn btn-view-details btn-sm" title="Ver Detalles">
-                                    <i class="bi bi-eye"></i> Detalles
-                                </a>
-                                <a th:href="@{/admin/reservas/editar/{id}(id=${reserva.idReserva})}"
-                                   class="btn btn-warning btn-sm mt-1" title="Editar Contrato">
-                                    <i class="bi bi-pencil"></i> Editar
-                                </a>
+                                <div class="d-flex flex-column align-items-start">
+                                    <a th:href="@{/admin/reservas/{id}(id=${reserva.idReserva})}"
+                                       class="btn btn-view-details btn-sm mb-1" title="Ver Detalles">
+                                        <i class="bi bi-eye"></i> Detalles
+                                    </a>
+                                    <form th:if="${reserva.estado.name() == 'PENDIENTE'}"
+                                          th:action="@{/admin/reservas/confirmar/{id}(id=${reserva.idReserva})}"
+                                          method="post" style="display:inline;"
+                                          onsubmit="return confirm('¿Está seguro de que desea CONFIRMAR esta reserva?');">
+                                        <button type="submit" class="btn btn-success btn-sm mb-1"
+                                                title="Confirmar Reserva">
+                                            <i class="bi bi-check-circle"></i> Confirmar
+                                        </button>
+                                    </form>
+
+                                    <form th:if="${reserva.estado.name() == 'PENDIENTE' || reserva.estado.name() == 'CONFIRMADA'}"
+                                          th:action="@{/admin/reservas/cancelar/{id}(id=${reserva.idReserva})}"
+                                          method="post" style="display:inline;"
+                                          onsubmit="return confirm('¿Está seguro de que desea CANCELAR esta reserva?');">
+                                        <button type="submit" class="btn btn-danger btn-sm mb-1"
+                                                title="Cancelar Reserva">
+                                            <i class="bi bi-x-circle"></i> Cancelar
+                                        </button>
+                                    </form>
+
+                                    <form th:if="${reserva.estado.name() == 'CONFIRMADA'}"
+                                          th:action="@{/admin/reservas/realizada/{id}(id=${reserva.idReserva})}"
+                                          method="post" style="display:inline;"
+                                          onsubmit="return confirm('¿Está seguro de que desea marcar esta reserva como REALIZADA?');">
+                                        <button type="submit" class="btn btn-secondary btn-sm mb-1"
+                                                title="Marcar como Realizada">
+                                            <i class="bi bi-check-all"></i> Realizada
+                                        </button>
+                                    </form>
+
+                                    <a th:href="@{/admin/reservas/editar/{id}(id=${reserva.idReserva})}"
+                                       class="btn btn-warning btn-sm mt-1" title="Editar Contrato">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                         <tr th:if="${reservasBD.isEmpty()}">
-                            <td colspan="12" class="text-center text-muted py-4"> No se encontraron contratos de
+                            <td colspan="13" class="text-center text-muted py-4"> No se encontraron contratos de
                                 presentación.
                             </td>
                         </tr>

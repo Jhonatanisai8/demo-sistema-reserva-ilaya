@@ -64,6 +64,39 @@
                 background-color: #5a6268;
                 border-color: #545b62;
             }
+
+            /* Estilos para los botones de estado */
+            .btn-success {
+                background-color: #28a745;
+                border-color: #28a745;
+                color: white;
+            }
+
+            .btn-success:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+            }
+
+            .btn-danger {
+                background-color: #dc3545;
+                border-color: #dc3545;
+            }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+                border-color: #bd2130;
+            }
+
+            .btn-secondary {
+                background-color: #6c757d;
+                border-color: #6c757d;
+                color: white;
+            }
+
+            .btn-secondary:hover {
+                background-color: #5a6268;
+                border-color: #545b62;
+            }
         </style>
     </th:block>
 </head>
@@ -145,6 +178,33 @@
                     <a th:href="@{/admin/reservas/editar/{id}(id=${reserva.idReserva})}" class="btn btn-warning ms-2">
                         <i class="bi bi-pencil me-1"></i> Editar Contrato
                     </a>
+
+                    <form th:if="${reserva.estado.name() == 'PENDIENTE'}"
+                          th:action="@{/admin/reservas/confirmar/{id}(id=${reserva.idReserva})}"
+                          method="post" style="display:inline;"
+                          onsubmit="return confirm('¿Está seguro de que desea CONFIRMAR esta reserva?');">
+                        <button type="submit" class="btn btn-success ms-2" title="Confirmar Reserva">
+                            <i class="bi bi-check-circle me-1"></i> Confirmar
+                        </button>
+                    </form>
+
+                    <form th:if="${reserva.estado.name() == 'PENDIENTE' || reserva.estado.name() == 'CONFIRMADA'}"
+                          th:action="@{/admin/reservas/cancelar/{id}(id=${reserva.idReserva})}"
+                          method="post" style="display:inline;"
+                          onsubmit="return confirm('¿Está seguro de que desea CANCELAR esta reserva?');">
+                        <button type="submit" class="btn btn-danger ms-2" title="Cancelar Reserva">
+                            <i class="bi bi-x-circle me-1"></i> Cancelar
+                        </button>
+                    </form>
+
+                    <form th:if="${reserva.estado.name() == 'CONFIRMADA'}"
+                          th:action="@{/admin/reservas/realizada/{id}(id=${reserva.idReserva})}"
+                          method="post" style="display:inline;"
+                          onsubmit="return confirm('¿Está seguro de que desea marcar esta reserva como REALIZADA?');">
+                        <button type="submit" class="btn btn-secondary ms-2" title="Marcar como Realizada">
+                            <i class="bi bi-check-all me-1"></i> Marcar como Realizada
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

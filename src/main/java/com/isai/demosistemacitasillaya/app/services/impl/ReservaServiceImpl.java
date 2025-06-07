@@ -99,4 +99,43 @@ public class ReservaServiceImpl implements ReservaService {
         }
 
     }
+
+    //metodos para la logica del admin
+    @Transactional
+    public Reserva confirmarReserva(Integer idReserva) {
+        Reserva reserva = reservaRepository.findById(idReserva)
+                .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada con ID: " + idReserva));
+        if (reserva.getEstado() == EstadoReserva.PENDIENTE) {
+            reserva.setEstado(EstadoReserva.CONFIRMADA);
+            return reservaRepository.save(reserva);
+        } else {
+            throw new IllegalStateException("La reserva no puede ser confirmada, su estado actual es: " + reserva.getEstado().displayName());
+        }
+    }
+
+    @Transactional
+    public Reserva cancelarReservaAdmin(Integer idReserva) { // Un método separado para admin si quieres lógica distinta
+        Reserva reserva = reservaRepository.findById(idReserva)
+                .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada con ID: " + idReserva));
+
+        if (reserva.getEstado() == EstadoReserva.PENDIENTE || reserva.getEstado() == EstadoReserva.CONFIRMADA) {
+            reserva.setEstado(EstadoReserva.CANCELADA);
+            return reservaRepository.save(reserva);
+        } else {
+            throw new IllegalStateException("La reserva no puede ser cancelada, su estado actual es: " + reserva.getEstado().displayName());
+        }
+    }
+
+    @Transactional
+    public Reserva marcarComoRealizada(Integer idReserva) {
+        Reserva reserva = reservaRepository.findById(idReserva)
+                .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada con ID: " + idReserva));
+
+        if (reserva.getEstado() == EstadoReserva.CONFIRMADA) {
+            reserva.setEstado(EstadoReserva.ASISTIO);
+            return reservaRepository.save(reserva);
+        } else {
+            throw new IllegalStateException("La reserva no puede ser marcada como realizada, su estado actual es: " + reserva.getEstado().displayName());
+        }
+    }
 }
