@@ -2,7 +2,6 @@ package com.isai.demosistemacitasillaya.app.models;
 
 import com.isai.demosistemacitasillaya.app.models.emuns.EstadoEmpleado;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -43,6 +42,7 @@ public class Empleado {
     private String dni;
 
     @Column(name = "fecha_nacimiento")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;
 
     @NotEmpty
@@ -58,7 +58,7 @@ public class Empleado {
     @Column(name = "cargo", nullable = false, length = 50)
     private String cargo;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "fecha_contratacion", columnDefinition = "DATE DEFAULT (CURRENT_DATE)")
     private LocalDate fechaContratacion;
 
