@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout-admin.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:fragment="title">Dashboard de Administración</title>
+
+    <th:block layout:fragment="styles">
+        <style>
+            .dashboard-card {
+                border-radius: 0.75rem;
+                background-color: var(--card-bg);
+                box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+                transition: transform 0.2s ease-in-out;
+            }
+            .dashboard-card:hover {
+                transform: translateY(-5px);
+            }
+            .dashboard-card .card-body {
+                padding: 1.5rem;
+            }
+            .dashboard-card .card-title {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--text-dark);
+            }
+            .dashboard-card .card-text {
+                font-size: 2.5rem;
+                font-weight: 700;
+                color: var(--primary); /* O un color de acento */
+                margin-top: 0.5rem;
+            }
+            .card-icon {
+                font-size: 3rem;
+                color: rgba(0, 0, 0, 0.2); /* Color más claro para el icono de fondo */
+                position: absolute;
+                top: 15px;
+                right: 20px;
+            }
+            .detail-list {
+                list-style: none;
+                padding: 0;
+                margin-top: 1rem;
+            }
+            .detail-list li {
+                display: flex;
+                justify-content: space-between;
+                padding: 0.3rem 0;
+                border-bottom: 1px dotted #eee;
+                font-size: 0.95rem;
+            }
+            .detail-list li:last-child {
+                border-bottom: none;
+            }
+            .bg-info-light {
+                background-color: #e0f2f7;
+                /* Un azul cl
+                aro */
+            }
+            .bg-warning-light {
+                background-color: #fff3e0;
+                /* Un naranja
+                 claro */
+            }
+            .bg-success-light {
+                background-color: #e8f5e9;
+                /* Un verde c
+                laro */
+            }
+            .bg-danger-light {
+                background-color: #ffebee;
+                /* Un rojo cl
+                aro */
+            }
+
+            /* Colores p
+            ara los estados de reserva */
+            .estado-PENDIENTE { color: #ffc107;
+                /* warning */
+            }
+            .estado-CONFIRMADA { color: #28a745;
+                /* success */
+            }
+            .estado-CANCELADA { color: #dc3545;
+                /* danger */
+            }
+            .estado-COMPLETADA { color: #007bff;
+                /* info */ }
+
+            /* Podrías te
+            ner un estado completado */
+
+
+            /* Colores p
+            ara los estados de empleado */
+            .estado-ACTIVO { color: #28a745;
+                /* success */
+            }
+            .estado-INACTIVO { color: #6c757d;
+                /* secondary
+                */ }
+            .estado-VACACIONES { color: #17a2b8;
+                /* info */ }
+
+            .estado-LICENCIA { color: #ffc107;
+                /* warning */
+            }
+            .estado-DESPEDIDO { color: #dc3545;
+                /* danger */
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+
+<main layout:fragment="content" class="flex-grow-1">
+    <header class="mb-4">
+        <h1 class="h3">
+            <i class="bi bi-speedometer2 me-2"></i>Dashboard de Administración
+        </h1>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card dashboard-card position-relative bg-primary text-white">
+                    <div class="card-body">
+                        <i class="bi bi-music-note-list card-icon opacity-50"></i>
+                        <h5 class="card-title text-white">Total de Presentaciones</h5>
+                        <p class="card-text text-white" th:text="${totalPresentaciones}">150</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card dashboard-card position-relative bg-info text-white">
+                    <div class="card-body">
+                        <i class="bi bi-people card-icon opacity-50"></i>
+                        <h5 class="card-title text-white">Total de Empleados</h5>
+                        <p class="card-text text-white" th:text="${totalEmpleados}">50</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card dashboard-card position-relative bg-success text-white">
+                    <div class="card-body">
+                        <i class="bi bi-person-circle card-icon opacity-50"></i>
+                        <h5 class="card-title text-white">Total de Usuarios</h5>
+                        <p class="card-text text-white" th:text="${totalUsuarios}">2500</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="card dashboard-card">
+                    <div class="card-header bg-warning-light">
+                        <h5 class="card-title mb-0">Reservas por Estado</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="detail-list">
+                            <li th:each="entry : ${reservasPorEstado}">
+                                <span th:text="${entry.key.displayName != null ? entry.key.displayName : entry.key.name()}"
+                                      th:classappend="'estado-' + ${entry.key.name()}">Pendiente</span>
+                                <span class="fw-bold" th:text="${entry.value}">120</span>
+                            </li>
+                            <li th:if="${reservasPorEstado.isEmpty()}">
+                                <span class="text-muted">No hay reservas registradas.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="card dashboard-card">
+                    <div class="card-header bg-info-light">
+                        <h5 class="card-title mb-0">Empleados por Estado</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="detail-list">
+                            <li th:each="entry : ${empleadosPorEstado}">
+                                <span th:text="${entry.key.displayName != null ? entry.key.displayName : entry.key.name()}"
+                                      th:classappend="'estado-' + ${entry.key.name()}">Activo</span>
+                                <span class="fw-bold" th:text="${entry.value}">40</span>
+                            </li>
+                            <li th:if="${empleadosPorEstado.isEmpty()}">
+                                <span class="text-muted">No hay empleados registrados.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<th:block layout:fragment="scripts">
+</th:block>
+</body>
+</html>
