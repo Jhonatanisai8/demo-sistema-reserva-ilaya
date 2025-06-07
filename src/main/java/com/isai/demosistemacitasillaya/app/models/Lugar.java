@@ -30,7 +30,7 @@ public class Lugar {
     @Column(name = "capacidad_total", nullable = false)
     private Integer capacidadTotal;
 
-    @Column(name = "contacto_telefono", length = 15)
+    @Column(name = "contacto_telefono", length = 9)
     private String contactoTelefono;
 
     // Relación OneToMany con Presentaciones

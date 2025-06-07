@@ -6,13 +6,18 @@ import com.isai.demosistemacitasillaya.app.services.impl.PresentacionServiceImpl
 import com.isai.demosistemacitasillaya.app.services.impl.ReservaServiceImpl;
 import com.isai.demosistemacitasillaya.app.services.impl.UsuarioServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Controller
@@ -54,5 +59,26 @@ public class ClienteReservaController {
         return "cliente/reservaciones/nueva-reserva";
     }
 
+    @PostMapping(path = "/nueva-reserva")
+    public String crearNuevaReserva(@ModelAttribute("reserva") Reserva reserva,
+                                    @ModelAttribute("presentacion") Presentacion presentacion,
+                                    @ModelAttribute("lugar") Lugar lugar,
+                                    RedirectAttributes redirectAttributes) {
+        try {
+            Cliente cliente = obtenerClienteConectado();
+            reserva.setCliente(cliente);
+            reserva.setFechaContrato(LocalDate.now());
+            reservaServiceImpl.crearReserva(reserva, presentacion, lugar);
+            redirectAttributes.addFlashAttribute("successMessage", "La propuesta de presentación, lugar y contrato han sido creados correctamente.");
+            return "redirect:/cliente/reservaciones";
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/cliente/reservaciones";
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+            ex.printStackTrace();
+            return "redirect:/cliente/reservaciones/nueva-reserva";
+        }
+    }
 
 }

@@ -66,6 +66,11 @@ public class ReservaServiceImpl implements ReservaService {
         presentacion.setLugar(lugarGuardado);
         Presentacion presentacionGuardada = presentacionServiceImpl.guardarPresentacion(presentacion);
         reserva.setPresentacion(presentacionGuardada);
+        reserva.setFechaContrato(LocalDate.now());
+        if (reserva.getEstado() == null) {
+            reserva.setEstado(EstadoReserva.PENDIENTE);
+        }
+
         if (reserva.getFechaContrato() == null) {
             throw new IllegalArgumentException("La fecha del contrato es obligatoria.");
         }

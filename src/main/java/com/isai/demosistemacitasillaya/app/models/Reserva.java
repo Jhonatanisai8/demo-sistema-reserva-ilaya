@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -40,6 +41,9 @@ public class Reserva {
     @Column(name = "fecha_contrato", nullable = false)
     private LocalDate fechaContrato;
 
+    @Column(name = "fecha_creacion_registro", nullable = false, updatable = false)
+    private LocalDateTime fechaCreacionRegistro; // El tipo de dato para fecha y hora
+
     @NotNull(message = "El monto acordado es obligatorio.")
     @DecimalMin(value = "0.0", inclusive = false, message = "El monto acordado debe ser un valor positivo.")
     @Digits(integer = 10, fraction = 2, message = "El monto acordado debe tener hasta 10 dígitos enteros y 2 decimales.")
@@ -55,5 +59,11 @@ public class Reserva {
     @Column(name = "notas_contrato", length = 500)
     private String notasContrato;
 
-
+    @PrePersist
+    protected void onCreate() {
+        this.fechaCreacionRegistro = LocalDateTime.now();
+        if (this.estado == null) {
+            this.estado = EstadoReserva.PENDIENTE;
+        }
+    }
 }

@@ -5,20 +5,20 @@
       layout:decorate="~{cliente/layout-cliente.html}">
 <head>
     <meta charset="UTF-8">
-    <title layout:fragment="title">Mis Reservas</title>
+    <title layout:fragment="title">Mis Contratos de Presentación</title>
 </head>
 <body>
 
 <header layout:fragment="header">
-    <h1 class="h3"><i class="bi bi-calendar-check me-2"></i>Mis Reservas</h1>
+    <h1 class="h3"><i class="bi bi-calendar-check me-2"></i>Mis Contratos de Presentación</h1>
 </header>
 
 <section layout:fragment="content" class="flex-grow-1">
     <div class="card shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h4>Listado de Mis Reservas</h4>
+            <h4>Listado de Mis Contratos de Presentación</h4>
             <a th:href="@{/cliente/reservaciones/nueva-reserva}" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-2"></i> Nueva Reserva
+                <i class="bi bi-plus-circle me-2"></i> Crear Nueva Propuesta (Lugar, Presentación y Contrato)
             </a>
         </div>
         <div class="card-body">
@@ -35,10 +35,11 @@
                 <table class="table table-striped table-hover">
                     <thead>
                     <tr>
-                        <th>ID Reserva</th>
-                        <th>Presentación (Show)</th>
+                        <th>ID Contrato</th>
+                        <th>Título Show Propuesto</th>
                         <th>Fecha Show</th>
                         <th>Hora Show</th>
+                        <th>Lugar Propuesto</th>
                         <th>Fecha Contrato</th>
                         <th>Monto Acordado</th>
                         <th>Estado</th>
@@ -49,10 +50,12 @@
                     <tbody>
                     <tr th:each="reserva : ${reservas}">
                         <td th:text="${reserva.idReserva}">1</td>
-                        <td th:text="${reserva.presentacion.tituloShow}">Título del Show</td>
+                        <td th:text="${reserva.presentacion.tituloShow}">Título del Show Propuesto</td>
                         <td th:text="${#temporals.format(reserva.presentacion.fecha, 'dd/MM/yyyy')}">10/06/2025</td>
                         <td th:text="${#temporals.format(reserva.presentacion.horaInicio, 'HH:mm')}">18:00</td>
-                        <td th:text="${#temporals.format(reserva.fechaContrato, 'dd/MM/yyyy')}">05/06/2025</td>
+                        <td th:text="${reserva.presentacion.lugar.nombreLugar}">Nombre del Lugar Propuesto</td>
+                        <td th:text="${#temporals.format(reserva.fechaContrato, 'dd/MM/yyyy HH:mm')}">05/06/2025 14:30
+                        </td>
                         <td th:text="${#numbers.formatCurrency(reserva.montoAcordado)}">$100.00</td>
                         <td th:text="${reserva.estado.displayName}">Pendiente</td>
                         <td th:text="${reserva.notasContrato ?: 'N/A'}">Notas del contrato</td>
@@ -61,7 +64,7 @@
                                     th:if="${reserva.estado.name() == 'PENDIENTE' || reserva.estado.name() == 'CONFIRMADA'}"
                                     th:data-id="${reserva.idReserva}"
                                     data-bs-toggle="modal" data-bs-target="#confirmCancelModal"
-                                    title="Cancelar Reserva">
+                                    title="Cancelar Contrato">
                                 <i class="bi bi-x-circle"></i> Cancelar
                             </button>
                             <span th:if="${reserva.estado.name() == 'CANCELADA' || reserva.estado.name() == 'REALIZADA'}"
@@ -69,8 +72,8 @@
                         </td>
                     </tr>
                     <tr th:if="${reservas.isEmpty()}">
-                        <td colspan="9" class="text-center text-muted py-4">
-                            No tienes reservas registradas. ¡Haz la primera!
+                        <td colspan="10" class="text-center text-muted py-4">
+                            No tienes contratos de presentación registrados. ¡Crea tu primera propuesta!
                         </td>
                     </tr>
                     </tbody>
@@ -84,19 +87,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="confirmCancelModalLabel">Confirmar Cancelación de Reserva</h5>
+                    <h5 class="modal-title" id="confirmCancelModalLabel">Confirmar Cancelación de Contrato</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ¿Estás seguro de que deseas cancelar esta reserva? Esta acción no se puede deshacer.
+                    ¿Estás seguro de que deseas cancelar este contrato de presentación? Esta acción no se puede
+                    deshacer.
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, mantener reserva
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, mantener contrato
                     </button>
                     <form id="cancelForm" th:action="@{/cliente/citas/cancelar}" method="post">
                         <input type="hidden" name="idReserva" id="cancelReservaId">
-                        <button type="submit" class="btn btn-danger">Sí, Cancelar Reserva</button>
+                        <button type="submit" class="btn btn-danger">Sí, Cancelar Contrato</button>
                     </form>
                 </div>
             </div>
